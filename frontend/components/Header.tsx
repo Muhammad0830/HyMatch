@@ -23,7 +23,6 @@ const Header = ({
 }) => {
   const width = Dimensions.get("window").width;
   const barsWidth = width * 0.8;
-  console.log("width", barsWidth);
   const translateX = useSharedValue(-150); // start at 150%
   const translateXSort = useSharedValue(150); // start at 150%
 
@@ -58,7 +57,6 @@ const Header = ({
     translateXSort.value = withTiming(translateXSort.value === 150 ? 0 : 150, {
       duration: 200,
     });
-    console.log("translateXSort", translateXSort.value);
   };
 
   const animatedStyleSort = useAnimatedStyle(() => ({
