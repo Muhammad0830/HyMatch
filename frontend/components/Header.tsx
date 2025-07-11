@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useCallback } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
@@ -7,24 +7,11 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { HeaderProps } from "@/interfaces/interfaces";
 
-type FontAwesomeIconName = React.ComponentProps<typeof FontAwesome>["name"];
-
-const Header = ({
-  title,
-  leftIcon,
-  rightIcon,
-  isIndexHeader,
-}: {
-  title: string;
-  leftIcon: FontAwesomeIconName;
-  rightIcon: FontAwesomeIconName;
-  isIndexHeader?: boolean;
-}) => {
-  const width = Dimensions.get("window").width;
-  const barsWidth = width * 0.8;
-  const translateX = useSharedValue(-150); // start at 150%
-  const translateXSort = useSharedValue(150); // start at 150%
+const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
+  const translateX = useSharedValue(-150);
+  const translateXSort = useSharedValue(150);
 
   useFocusEffect(
     useCallback(() => {
@@ -128,7 +115,7 @@ const Header = ({
       {/* hamburger menu */}
       {isIndexHeader ? (
         <Animated.View
-          className={`absolute z-20 border border-black border-l-transparent w-[${barsWidth}px] px-4 py-4 left-0 top-2 rounded-tr-lg rounded-br-lg bg-white`}
+          className={`absolute z-20 border border-black border-l-transparent w-[85%] px-4 py-4 left-0 top-2 rounded-tr-lg rounded-br-lg bg-white`} 
           style={animatedStyle}
         >
           <View className="flex-row items-center justify-between">
@@ -163,7 +150,7 @@ const Header = ({
 
       {/* sort menu */}
       <Animated.View
-        className={`absolute z-20 border border-black border-r-0 rounded-tl-lg rounded-bl-lg w-[${barsWidth}px] px-4 py-4 right-0 top-2 rounded-tr-lg rounded-br-lg bg-white gap-4`}
+        className={`absolute z-20 border border-black border-r-0 rounded-tl-lg rounded-bl-lg w-[85%] px-4 py-4 right-0 top-2 rounded-tr-lg rounded-br-lg bg-white gap-4`}
         style={animatedStyleSort}
       >
         <View className="flex-row items-center justify-between">
