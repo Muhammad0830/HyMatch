@@ -21,7 +21,7 @@ export default function _layout() {
             marginBottom: 12,
             height: 60,
             position: "absolute",
-            bottom: 0 ,
+            bottom: 0,
             overflow: "hidden",
           },
         }}
@@ -30,15 +30,13 @@ export default function _layout() {
           name="refused"
           options={{
             title: "Refused",
-            header: () => {
-              return (
-                <Header
-                  leftIcon="mail-reply"
-                  title="Refusal リスト"
-                  rightIcon="sliders"
-                />
-              );
-            },
+            header: () => (
+              <Header
+                leftIcon="mail-reply"
+                title="Refusal リスト"
+                rightIcon="sliders"
+              />
+            ),
             tabBarButton: (props) => {
               return <AnimatedTabIcon {...props} icon="trash" />;
             },
@@ -48,16 +46,14 @@ export default function _layout() {
           name="index"
           options={{
             title: "Home",
-            header: () => {
-              return (
-                <Header
-                  isIndexHeader
-                  leftIcon="bars"
-                  title="仕事一覧"
-                  rightIcon="sliders"
-                />
-              );
-            },
+            header: () => (
+              <Header
+                isIndexHeader
+                leftIcon="bars"
+                title="仕事一覧"
+                rightIcon="sliders"
+              />
+            ),
             tabBarButton: (props) => {
               return <AnimatedTabIcon {...props} icon="phone" />;
             },
@@ -67,15 +63,13 @@ export default function _layout() {
           name="chosen"
           options={{
             title: "Chosen",
-            header: () => {
-              return (
-                <Header
-                  leftIcon="mail-reply"
-                  title="Choose リスト"
-                  rightIcon="sliders"
-                />
-              );
-            },
+            header: () => (
+              <Header
+                leftIcon="mail-reply"
+                title="Choose リスト"
+                rightIcon="sliders"
+              />
+            ),
             tabBarButton: (props) => {
               return <AnimatedTabIcon {...props} icon="heart" />;
             },
