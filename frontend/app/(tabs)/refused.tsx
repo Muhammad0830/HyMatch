@@ -9,7 +9,7 @@ const Refused = () => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        router.replace("/"); 
+        router.replace("/");
         return true; // prevent default
       };
 
@@ -18,7 +18,7 @@ const Refused = () => {
         onBackPress
       );
       return () => subscription.remove();
-    }, [])
+    }, [router])
   );
   return (
     <View>
