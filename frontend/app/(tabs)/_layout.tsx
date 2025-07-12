@@ -17,7 +17,7 @@ export default function _layout() {
           tabBarStyle: {
             backgroundColor: "#c29c70",
             borderRadius: 10,
-            marginHorizontal: 20,
+            marginHorizontal: 10,
             marginBottom: 12,
             height: 60,
             position: "absolute",
