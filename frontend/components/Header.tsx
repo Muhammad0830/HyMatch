@@ -115,7 +115,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
       {/* hamburger menu */}
       {isIndexHeader ? (
         <Animated.View
-          className={`absolute z-20 border border-black border-l-transparent w-[85%] px-4 py-4 left-0 top-2 rounded-tr-lg rounded-br-lg bg-white`} 
+          className={`absolute z-20 border border-black border-l-transparent w-[85%] px-4 py-4 left-0 top-2 rounded-tr-lg rounded-br-lg bg-white`}
           style={animatedStyle}
         >
           <View className="flex-row items-center justify-between">

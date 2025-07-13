@@ -1,6 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 
-type FontAwesomeIconName = React.ComponentProps<typeof FontAwesome>["name"];
+export type FontAwesomeIconName = React.ComponentProps<typeof FontAwesome>["name"];
 
 export interface HeaderProps {
   title: string;
@@ -8,3 +8,8 @@ export interface HeaderProps {
   rightIcon: FontAwesomeIconName;
   isIndexHeader?: boolean;
 }
+
+export type DataContextType = {
+  data: any;
+  setData: React.Dispatch<React.SetStateAction<any>>;
+};

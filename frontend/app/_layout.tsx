@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { DataProvider } from "@/contexts/DataContext";
 
 export default function RootLayout() {
   useEffect(() => {
@@ -9,9 +10,11 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <Stack>
-      <StatusBar style="auto" backgroundColor="#000000" />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <DataProvider>
+      <Stack>
+        <StatusBar style="auto" backgroundColor="#000000" />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </DataProvider>
   );
 }
