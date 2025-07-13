@@ -1,0 +1,91 @@
+{
+    "jobsData": [
+        {
+            "id": 1,
+            "name": "hyMatch_job_01",
+            "type": "調理",
+            "icon": "utensils",
+            "description": "調理",
+            "price": "¥1,030 - ¥1,130",
+            "minLangLevel": "N3",
+            "fromHome": "~5",
+            "stationCode": "JU 01",
+            "nearStationName": "東京駅",
+            "workDay": {
+                "Mon": true,
+                "Tue": true,
+                "Wed": true,
+                "Thu": true,
+                "Fri": true,
+                "Sat": true,
+                "Sun": false
+            },
+            "time": "09:00 - 18:00",
+            "star": {
+                "nearStation": true,
+                "beginnerWelcome": false,
+                "salaryIncrease": true,
+                "timeFlexiblity": false,
+                "5/7Workday": false
+            }
+        },
+        {
+            "id": 2,
+            "name": "hyMatch_job_02",
+            "type": "調理",
+            "icon": "utensils",
+            "description": "ファッション",
+            "price": "¥1,300 - ¥1,500",
+            "minLangLevel": "N3",
+            "fromHome": "~5",
+            "stationCode": "新宿駅",
+            "nearStationName": "新宿駅",
+            "workDay": {
+                "Mon": true,
+                "Tue": true,
+                "Wed": true,
+                "Thu": true,
+                "Fri": true,
+                "Sat": true,
+                "Sun": false
+            },
+            "time": "09:00 - 18:00",
+            "star": {
+                "nearStation": true,
+                "beginnerWelcome": true,
+                "salaryIncrease": true,
+                "timeFlexiblity": false,
+                "5/7Workday": false
+            }
+        },
+        {
+            "id": 3,
+            "name": "hyMatch_job_03",
+            "type": "調理",
+            "icon": "utensils",
+            "description": "ファッション",
+            "price": "¥1,000 - ¥2,000",
+            "minLangLevel": "N3",
+            "fromHome": "~10",
+            "stationCode": "JS 19",
+            "nearStationName": "渋谷駅",
+            "workDay": {
+                "Mon": true,
+                "Tue": true,
+                "Wed": true,
+                "Thu": true,
+                "Fri": true,
+                "Sat": false,
+                "Sun": false
+            },
+            "time": "08:00 - 17:00",
+            "star": {
+                "nearStation": false,
+                "beginnerWelcome": true,
+                "salaryIncrease": false,
+                "timeFlexiblity": false,
+                "5/7Workday": true
+            }
+        }
+    ]
+}
