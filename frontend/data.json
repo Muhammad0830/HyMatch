@@ -87,5 +87,11 @@
                 "5/7Workday": true
             }
         }
+    ],
+    "RefusedData": [
+
+    ],
+    "ChosenData": [
+
     ]
 }

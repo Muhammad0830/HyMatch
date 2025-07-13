@@ -24,6 +24,18 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    console.log(
+      "data",
+      data.jobsData.map((job: any) => job.id)
+    );
+    console.log(
+      "chosen",
+      data.ChosenData.map((job: any) => job.id)
+    );
+    console.log(
+      "refused",
+      data.RefusedData.map((job: any) => job.id)
+    );
     AsyncStorage.setItem("myData", JSON.stringify(data));
   }, [data]);
 
