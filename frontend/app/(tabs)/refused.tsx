@@ -2,29 +2,18 @@ import React, { useCallback, useEffect } from "react";
 import {
   BackHandler,
   View,
-  Text,
   ScrollView,
+  Text,
   TouchableOpacity,
-  Animated,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useData } from "@/contexts/DataContext";
-import {
-  faBellConcierge,
-  faBroom,
-  faChevronDown,
-  faHotel,
-  faIndustry,
-  faTruck,
-  faUtensils,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import RefusedCard from "@/components/RefusedCard";
 
 const Refused = () => {
   const router = useRouter();
-  const { data, setData } = useData();
+  const { data } = useData();
   const [refusedData, setRefusedData] = React.useState([]);
 
   useEffect(() => {
@@ -46,7 +35,9 @@ const Refused = () => {
     }, [router])
   );
 
-  if (refusedData.length) {
+  console.log("refusedData", refusedData.length);
+
+  if (refusedData) {
     return (
       <ScrollView className="flex-1 px-2 pt-4 pb-[70px] gap-2">
         {refusedData?.length > 0 ? (
@@ -55,16 +46,27 @@ const Refused = () => {
               <RefusedCard key={index} job={job} index={index} />
             ))}
           </View>
-        ) : null}
+        ) : (
+          <View className="w-full h-full min-h-[80vh] items-center flex-1 justify-center">
+            <Text className="text-xl text-center">
+              Refuseされた仕事はありません。
+            </Text>
+            <Text className="text-center text-xl mb-2 mt-5">
+              次のアクションは？
+            </Text>
+            <View className="flex-row items-center gap-3">
+              <TouchableOpacity className="px-2 py-1.5 rounded-md border border-blue-500 ">
+                <Text className="text-blue-500 text-sm">メインページへ</Text>
+              </TouchableOpacity>
+              <TouchableOpacity className="px-2 py-1.5 rounded-md bg-blue-500 ">
+                <Text className="text-white text-sm">Chooseリストへ</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </ScrollView>
     );
   }
-
-  return (
-    <View>
-      <Text>loading</Text>
-    </View>
-  );
 };
 
 export default Refused;
