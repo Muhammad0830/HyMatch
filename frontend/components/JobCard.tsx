@@ -98,9 +98,9 @@ export default function JobCard({ Job, index }: any) {
   return (
     <Animated.View
       style={{ transform: [{ translateX }] }}
-      className="flex-1 absolute top-0 bottom-0 left-0 right-0 text-center gap-1 py-[10px] px-[10px] items-center"
+      className="flex-1 absolute top-5 bottom-5 left-0 right-0 text-center gap-1 py-[10px] px-[10px] items-center"
     >
-      <View className={`bg-[#e4e3e3] w-full rounded-lg flex-1 p-2`}>
+      <View className={`bg-white w-full rounded-2xl flex-1 p-2`}>
         <View className="flex-row justify-between items-center gap-3 px-2 py-4">
           <View className="flex-row gap-3 items-center">
             <View
