@@ -35,8 +35,6 @@ const Refused = () => {
     }, [router])
   );
 
-  console.log("refusedData", refusedData.length);
-
   if (refusedData) {
     return (
       <ScrollView className="flex-1 px-2 pt-4 pb-[70px] gap-2">
