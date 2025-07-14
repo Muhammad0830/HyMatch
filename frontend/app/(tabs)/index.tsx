@@ -36,7 +36,7 @@ export default function Index() {
   const { data, setData } = useData();
 
   return (
-    <View className="flex-1 bg-[#b1b1b1] ">
+    <View className="flex-1 bg-[#b1b1b1]">
       {" "}
       {data.jobsData.length > 0 ? (
         data.jobsData.map((job: any, index: number) => {
