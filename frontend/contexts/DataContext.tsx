@@ -40,7 +40,12 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   }, [data]);
 
   return (
-    <DataContext.Provider value={{ data, setData }}>
+    <DataContext.Provider
+      value={{
+        data,
+        setData,
+      }}
+    >
       {children}
     </DataContext.Provider>
   );
