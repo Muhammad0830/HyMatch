@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 import Animated, {
@@ -8,10 +8,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { HeaderProps } from "@/interfaces/interfaces";
+import LanguageModal from "./LanguageModal";
 
 const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
   const translateX = useSharedValue(-150);
   const translateXSort = useSharedValue(150);
+  const [langModalVisible, setlangModalVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -73,7 +75,9 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
         }}
       >
         <TouchableOpacity
-          className={`w-[30px] aspect-square justify-center items-center rounded-full  bg-[${isIndexHeader ? "#c29c70" : "white"}]`}
+          className={`w-[30px] aspect-square justify-center items-center rounded-full  bg-[${
+            isIndexHeader ? "#c29c70" : "white"
+          }]`}
           onPress={() => {
             if (!isIndexHeader) {
               router.push("/");
@@ -138,7 +142,13 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <Text className="text-black font-bold text-lg">プロフィル</Text>
             </TouchableOpacity>
             <View className="bg-black/40 w-full h-[1px]"></View>
-            <TouchableOpacity className="flex-row items-center gap-3">
+            <TouchableOpacity
+              className="flex-row items-center gap-3"
+              onPress={() => {
+                setlangModalVisible(true);
+                handleBarsPress();
+              }}
+            >
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="globe" size={20} color={"#fff"} />
               </View>
@@ -246,6 +256,11 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
           </TouchableOpacity>
         </View>
       </Animated.View>
+
+      <LanguageModal
+        langModalVisible={langModalVisible}
+        setlangModalVisible={setlangModalVisible}
+      />
     </View>
   );
 };

@@ -23,6 +23,7 @@ import {
   faTrainSubway,
   faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from 'react-i18next';
 
 export default function JobCard({ Job, index }: any) {
   const handleInfoPress = () => {
@@ -61,6 +62,8 @@ export default function JobCard({ Job, index }: any) {
     },
   ];
 
+  const { t } = useTranslation("");
+
   return (
     <View
       className="top-5  w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center"
@@ -74,7 +77,7 @@ export default function JobCard({ Job, index }: any) {
             >
               <FontAwesomeIcon icon={faBuilding} size={24} color="blue" />
             </View>
-            <Text className="text-2xl font-bold">{Job.name}</Text>
+            <Text className="text-2xl font-bold">{t('hello')}</Text>
           </View>
           <TouchableOpacity
             onPress={() => handleInfoPress()}
