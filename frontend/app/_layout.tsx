@@ -3,6 +3,7 @@ import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { DataProvider } from "@/contexts/DataContext";
+import '@/lib/fontawesome'; // adjust path if needed
 
 export default function RootLayout() {
   useEffect(() => {
