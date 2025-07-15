@@ -1,5 +1,5 @@
-import { Animated, Text, TouchableOpacity, View } from "react-native";
-import React, { useRef } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faFileContract,
@@ -22,15 +22,9 @@ import {
   faHotel,
   faTrainSubway,
   faArrowUp,
-  faArrowLeft,
-  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { useData } from "@/contexts/DataContext";
 
 export default function JobCard({ Job, index }: any) {
-  const { data, setData } = useData();
-  const translateX = useRef(new Animated.Value(0)).current;
-
   const handleInfoPress = () => {
     alert("ここにはないよ");
   };
@@ -67,38 +61,9 @@ export default function JobCard({ Job, index }: any) {
     },
   ];
 
-  const handleRefusePress = () => {
-    Animated.timing(translateX, {
-      toValue: -400,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-    console.log("refuse", Job.id);
-    const jobsData = data.jobsData.filter((job: any) => job.id !== Job.id);
-    const RefusedData = [...data.RefusedData, Job];
-    setTimeout(() => {
-      setData({ ...data, jobsData, RefusedData });
-    }, 300);
-  };
-
-  const handleChoosePress = () => {
-    Animated.timing(translateX, {
-      toValue: 500,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-    console.log("choose", Job.id);
-    const jobsData = data.jobsData.filter((job: any) => job.id !== Job.id);
-    const ChosenData = [...data.ChosenData, Job];
-    setTimeout(() => {
-      setData({ ...data, jobsData, ChosenData });
-    }, 300);
-  };
-
   return (
-    <Animated.View
-      style={{ transform: [{ translateX }] }}
-      className="flex-1 absolute top-5 bottom-5 left-0 right-0 text-center gap-1 py-[10px] px-[10px] items-center"
+    <View
+      className="top-5  w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center"
     >
       <View className={`bg-white w-full rounded-2xl flex-1 p-2`}>
         <View className="flex-row justify-between items-center gap-3 px-2 py-4">
@@ -272,20 +237,7 @@ export default function JobCard({ Job, index }: any) {
           </View>
         </View>
       </View>
-      <View className="transparent w-full" style={{ height: 70 }}>
-        <TouchableOpacity
-          onPress={() => handleRefusePress()}
-          className="absolute bottom-[90%] left-0 w-20 rounded-full border border-[#c29c70] bg-white px-2 py-4 justify-center items-center"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleChoosePress()}
-          className="absolute bottom-[90%] right-0 w-20 rounded-full border border-[#c29c70] bg-white px-2 py-4 justify-center items-center"
-        >
-          <FontAwesomeIcon icon={faArrowRight} />
-        </TouchableOpacity>
-      </View>
-    </Animated.View>
+      <View className="transparent w-full" style={{ height: 70 }}></View>
+    </View>
   );
 }
