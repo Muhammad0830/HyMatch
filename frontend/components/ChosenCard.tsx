@@ -10,6 +10,7 @@ import {
   faTruck,
   faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 export default function ChosenCard({ job, index }: any) {
   const typeIconMap: Record<string, any> = {
@@ -23,6 +24,7 @@ export default function ChosenCard({ job, index }: any) {
 
   const [expanded, setExpanded] = React.useState(false);
   const animation = React.useRef(new Animated.Value(0)).current;
+  const { t } = useTranslation();
 
   const toggleExpand = () => {
     setExpanded((prev) => !prev);
@@ -64,7 +66,8 @@ export default function ChosenCard({ job, index }: any) {
         <View className="flex-1">
           <Text className="font-bold text-base text-gray-800">{job.name}</Text>
           <Text className="text-sm text-gray-500">
-            {job.nearStationName}・{job.fromHome}分
+            {t(`${job.nearStationName}`)}・{job.fromHome}
+            {t("min")}
           </Text>
         </View>
 
@@ -80,7 +83,7 @@ export default function ChosenCard({ job, index }: any) {
         }}
       >
         <View className="flex-row justify-between items-center mb-2 px-1 pt-4">
-          <Text className="text-sm text-gray-600">{job.type}</Text>
+          <Text className="text-sm text-gray-600">{t(`${job.type}`)}</Text>
           <Text className="text-sm text-gray-700 font-semibold">
             {job.price}
           </Text>
@@ -88,23 +91,25 @@ export default function ChosenCard({ job, index }: any) {
 
         <View className="flex-row justify-between items-center px-1">
           <Text className="text-sm text-gray-600">
-            レベル: {job.minLangLevel}
+            {t("Level")}: {job.minLangLevel}
           </Text>
-          <Text className="text-sm text-gray-600">週{truthyCount}日</Text>
+          <Text className="text-sm text-gray-600">
+            {t("days_per_week", { count: truthyCount })}
+          </Text>
         </View>
 
         <View className="flex-row gap-2 mt-4">
           <TouchableOpacity
             className="flex-1 py-2 rounded-md border border-blue-500 items-center"
-            onPress={() => console.log("Choose Again")}
+            onPress={() => console.log("Refuse Again")}
           >
-            <Text className="text-blue-500 font-medium">選択</Text>
+            <Text className="text-blue-500 font-medium">{t("RefuseAgain")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="flex-1 py-2 rounded-md bg-red-500 items-center"
             onPress={() => console.log("Delete")}
           >
-            <Text className="text-white font-medium">削除</Text>
+            <Text className="text-white font-medium">{t("Delete")}</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>

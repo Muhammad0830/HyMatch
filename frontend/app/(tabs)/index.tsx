@@ -16,15 +16,20 @@ import Data from "@/data.json";
 import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import Swiper from "react-native-deck-swiper";
+import { useTranslation } from "react-i18next";
 
 export default function Index() {
+  const { data, setData } = useData();
+  const [allJobs] = useState<any[]>([...data.jobsData]);
+  const { t } = useTranslation();
+
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
         // Exit app or show confirmation
-        Alert.alert("Exit App", "Are you sure you want to exit?", [
-          { text: "Cancel", style: "cancel" },
-          { text: "Exit", onPress: () => BackHandler.exitApp() },
+        Alert.alert(`${t("exitApp")}`, "", [
+          { text: `${t("Cancel")}`, style: "cancel" },
+          { text: `${t("Exit")}`, onPress: () => BackHandler.exitApp() },
         ]);
         return true; // 👈 prevents default tab back navigation
       };
@@ -34,11 +39,8 @@ export default function Index() {
         onBackPress
       );
       return () => subscription.remove();
-    }, [])
+    }, [t])
   );
-
-  const { data, setData } = useData();
-  const [allJobs] = useState<any[]>([...data.jobsData]);
 
   const rotate = useRef(new Animated.Value(0)).current;
 
@@ -112,9 +114,9 @@ export default function Index() {
         </View>
       ) : (
         <View className="items-center h-[83vh] px-1 justify-center">
-          <Text className="text-xl">仕事が終わりました</Text>
+          <Text className="text-xl">{t("noJobLeft")}</Text>
           <Text className="mt-4 mb-2 text-lg">
-            仕事が増えるまで、しばらくお待ちください
+            {t("waitForJobs")}
           </Text>
           <TouchableOpacity
             className="bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
@@ -127,7 +129,7 @@ export default function Index() {
                 color="white"
               />
             </Animated.View>
-            <Text className="text-white font-bold">リフレッシュ</Text>
+            <Text className="text-white font-bold">{t("Refresh")}</Text>
           </TouchableOpacity>
         </View>
       )}

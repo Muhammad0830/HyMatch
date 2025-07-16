@@ -10,11 +10,13 @@ import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { useData } from "@/contexts/DataContext";
 import ChosenCard from "@/components/ChosenCard";
+import { useTranslation } from "react-i18next";
 
 const Chosen = () => {
   const router = useRouter();
   const { data } = useData();
   const [chosenData, setChosenData] = React.useState([]);
+  const { t } = useTranslation()
 
   useEffect(() => {
     setChosenData(data.ChosenData);
@@ -47,23 +49,23 @@ const Chosen = () => {
         ) : (
           <View className="w-full h-full min-h-[80vh] items-center flex-1 justify-center">
             <Text className="text-xl text-center">
-              選ばれた仕事はありません。
+              {t("noChosen")}
             </Text>
             <Text className="text-center text-xl mb-2 mt-5">
-              次のアクションは？
+              {t("nextAction?")}
             </Text>
             <View className="flex-row items-center gap-3">
               <TouchableOpacity
                 onPress={() => router.replace("/")}
                 className="px-2 py-1.5 rounded-md border border-blue-500 "
               >
-                <Text className="text-blue-500 text-sm">メインページへ</Text>
+                <Text className="text-blue-500 text-sm">{t("mainPage")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => router.replace("/(tabs)/refused")}
                 className="px-2 py-1.5 rounded-md bg-blue-500 "
               >
-                <Text className="text-white text-sm">Refusalリストへ</Text>
+                <Text className="text-white text-sm">{t("refusalList")}</Text>
               </TouchableOpacity>
             </View>
           </View>
