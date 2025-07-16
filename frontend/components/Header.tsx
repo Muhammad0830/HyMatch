@@ -9,11 +9,15 @@ import Animated, {
 } from "react-native-reanimated";
 import { HeaderProps } from "@/interfaces/interfaces";
 import LanguageModal from "./LanguageModal";
+import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
   const translateX = useSharedValue(-150);
   const translateXSort = useSharedValue(150);
   const [langModalVisible, setlangModalVisible] = useState(false);
+  const { t } = useTranslation();
 
   useFocusEffect(
     useCallback(() => {
@@ -94,7 +98,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
         </TouchableOpacity>
       </View>
       <Text style={{ color: "black", fontWeight: 700, fontSize: 16 }}>
-        {title}
+        {t(`${title}`)}
       </Text>
       <View>
         <TouchableOpacity
@@ -123,7 +127,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
           style={animatedStyle}
         >
           <View className="flex-row items-center justify-between">
-            <Text className="text-2xl font-bold">メニュー</Text>
+            <Text className="text-2xl font-bold">{t("Menu")}</Text>
             <View>
               <TouchableOpacity
                 onPress={() => handleBarsPress()}
@@ -139,7 +143,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="user" size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">プロフィル</Text>
+              <Text className="text-black font-bold text-lg">{t("Profile")}</Text>
             </TouchableOpacity>
             <View className="bg-black/40 w-full h-[1px]"></View>
             <TouchableOpacity
@@ -150,9 +154,9 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               }}
             >
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
-                <FontAwesome name="globe" size={20} color={"#fff"} />
+                <FontAwesomeIcon icon={faGlobe} size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">言語変更</Text>
+              <Text className="text-black font-bold text-lg">{t("LanguageSettings")}</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -164,7 +168,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
         style={animatedStyleSort}
       >
         <View className="flex-row items-center justify-between">
-          <Text className="text-2xl font-bold">ソート</Text>
+          <Text className="text-2xl font-bold">{t("Sort")}</Text>
           <TouchableOpacity
             onPress={() => handleSortPress()}
             className="w-[30px] aspect-square rounded-full bg-[#c29c70] justify-center items-center"
@@ -178,7 +182,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="clock-o" size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">時給順</Text>
+              <Text className="text-black font-bold text-lg">{t("SortByTime")}</Text>
             </View>
           </TouchableOpacity>
           <View className="bg-black/40 w-full h-[1px]"></View>
@@ -188,7 +192,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
                 <FontAwesome name="home" size={20} color={"#fff"} />
               </View>
               <Text className="text-black font-bold text-lg">
-                通勤時間（自宅から）
+                {t("SortByHome")}
               </Text>
             </View>
           </TouchableOpacity>
@@ -199,7 +203,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
                 <FontAwesome name="building" size={18} color={"#fff"} />
               </View>
               <Text className="text-black font-bold text-lg">
-                通勤時間（学校から）
+                {t("SortBySchool")}
               </Text>
             </View>
           </TouchableOpacity>
@@ -209,12 +213,12 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="calendar-check-o" size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">投稿日順</Text>
+              <Text className="text-black font-bold text-lg">{t("SortByDate")}</Text>
             </View>
           </TouchableOpacity>
         </View>
         <View>
-          <Text className="text-2xl font-bold">フィルター</Text>
+          <Text className="text-2xl font-bold">{t("Filter")}</Text>
         </View>
         <View className="border border-black/30 rounded-md p-3 gap-2">
           <TouchableOpacity>
@@ -222,7 +226,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="file-excel-o" size={18} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">希望職種</Text>
+              <Text className="text-black font-bold text-lg">{t("DesiredJobType")}</Text>
             </View>
           </TouchableOpacity>
           <View className="bg-black/40 w-full h-[1px]"></View>
@@ -231,7 +235,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="comments-o" size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">日本語レベル</Text>
+              <Text className="text-black font-bold text-lg">{t("JapaneseLevel")}</Text>
             </View>
           </TouchableOpacity>
           <View className="bg-black/40 w-full h-[1px]"></View>
@@ -240,7 +244,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="clock-o" size={20} color={"#fff"} />
               </View>
-              <Text className="text-black font-bold text-lg">時給範囲</Text>
+              <Text className="text-black font-bold text-lg">{t("WorkHoursRange")}</Text>
             </View>
           </TouchableOpacity>
           <View className="bg-black/40 w-full h-[1px]"></View>
@@ -250,7 +254,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
                 <FontAwesome name="star" size={20} color={"#fff"} />
               </View>
               <Text className="text-black font-bold text-lg">
-                仕事で大事なこと
+                {t("Starred")}
               </Text>
             </View>
           </TouchableOpacity>

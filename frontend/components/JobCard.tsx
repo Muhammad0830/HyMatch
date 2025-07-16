@@ -23,9 +23,11 @@ import {
   faTrainSubway,
   faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export default function JobCard({ Job, index }: any) {
+  const { t } = useTranslation();
+
   const handleInfoPress = () => {
     alert("ここにはないよ");
   };
@@ -62,12 +64,8 @@ export default function JobCard({ Job, index }: any) {
     },
   ];
 
-  const { t } = useTranslation("");
-
   return (
-    <View
-      className="top-5  w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center"
-    >
+    <View className="top-5 w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center">
       <View className={`bg-white w-full rounded-2xl flex-1 p-2`}>
         <View className="flex-row justify-between items-center gap-3 px-2 py-4">
           <View className="flex-row gap-3 items-center">
@@ -77,7 +75,7 @@ export default function JobCard({ Job, index }: any) {
             >
               <FontAwesomeIcon icon={faBuilding} size={24} color="blue" />
             </View>
-            <Text className="text-2xl font-bold">{t('hello')}</Text>
+            <Text className="text-2xl font-bold">{t("hello")}</Text>
           </View>
           <TouchableOpacity
             onPress={() => handleInfoPress()}
@@ -87,7 +85,7 @@ export default function JobCard({ Job, index }: any) {
           </TouchableOpacity>
         </View>
         <View className="gap-5 mt-2 flex-1 justify-evenly border border-[#c29c70] rounded-2xl p-3">
-          <View className="flex-row items-center justify-between gap-3 px-3 ">
+          <View className="flex-row items-center justify-between gap-3">
             <View className="flex-row items-center gap-3">
               <View
                 style={{ padding: 20 }}
@@ -96,7 +94,7 @@ export default function JobCard({ Job, index }: any) {
                 <FontAwesomeIcon icon={faFileContract} size={24} color="blue" />
               </View>
               <View>
-                <Text className="text-lg font-bold">{Job.type}</Text>
+                <Text className="text-lg font-bold">{t(`${Job.type}`)}</Text>
               </View>
             </View>
             <View className="p-3 border border-[#c29c70] rounded-full justify-center items-center">
@@ -110,8 +108,8 @@ export default function JobCard({ Job, index }: any) {
 
           <View className="border border-x-0 border-b-0 border-t-[#c29c70]"></View>
 
-          <View className="flex-row items-center justify-between gap-3 py-2 px-3 ">
-            <View className="w-[55%] flex-row items-center gap-3">
+          <View className="flex-row items-center justify-between gap-3 py-2">
+            <View className="w-[53%] flex-row items-center gap-3">
               <View
                 style={{ padding: 20 }}
                 className="border border-[#c29c70] rounded-full w-[35px] justify-center items-center aspect-square"
@@ -123,14 +121,14 @@ export default function JobCard({ Job, index }: any) {
               </View>
             </View>
             <View className="w-[1px] border border-l-[#c29c70] border-r-0 h-[150%] "></View>
-            <View className="w-[44%] flex-row items-center gap-3">
+            <View className="w-[46%] flex-row items-center gap-1">
               <View
                 style={{ padding: 20 }}
                 className="border border-[#c29c70] rounded-full w-[35px] justify-center items-center aspect-square"
               >
                 <FontAwesomeIcon icon={faGlobe} size={24} color="blue" />
               </View>
-              <View>
+              <View className="flex-1 items-center mr-2">
                 <Text className="text-lg font-bold">{Job.minLangLevel}</Text>
               </View>
             </View>
@@ -138,7 +136,7 @@ export default function JobCard({ Job, index }: any) {
 
           <View className="border border-x-0 border-b-0 border-t-[#c29c70]"></View>
 
-          <View className="flex-row items-center justify-between gap-3 px-3 ">
+          <View className="flex-row items-center justify-between gap-3 pr-3">
             <View className="w-[55%] flex-row items-center gap-4">
               <View
                 style={{ padding: 20 }}
@@ -153,31 +151,34 @@ export default function JobCard({ Job, index }: any) {
                 </View>
               </View>
               <View>
-                <Text className="text-lg font-bold">{Job.fromHome}分</Text>
+                <Text className="text-lg font-bold">
+                  {Job.fromHome}
+                  {t("min")}
+                </Text>
               </View>
             </View>
             <View className="w-[1px] border border-l-[#c29c70] border-r-0 h-[100%] "></View>
-            <View className="w-[44%] flex-row items-center gap-3">
+            <View className="w-[44%] flex-row items-center gap-1">
               <View
                 style={{ padding: 20 }}
                 className="border border-[#c29c70] rounded-full w-[35px] justify-center items-center aspect-square"
               >
                 <FontAwesomeIcon icon={faTrain} size={24} color="blue" />
               </View>
-              <View className="gap-1">
-                <View className="border border-[#c29c70] rounded-full p-1 justify-center items-center aspect-square">
+              <View className="gap-1 flex-1 items-center">
+                <View className="border border-[#c29c70] rounded-full p-1 justify-center items-center w-14 aspect-square">
                   <Text className="text-xs text-blue-700">
                     {Job.stationCode}
                   </Text>
                 </View>
-                <Text className="font-bold">{Job.nearStationName}</Text>
+                <Text className="font-bold text-sm text-center">{t(`${Job.nearStationName}`)}</Text>
               </View>
             </View>
           </View>
 
           <View className="border border-x-0 border-b-0 border-t-[#c29c70]"></View>
 
-          <View className="flex-row items-center justify-between gap-3 px-4 ">
+          <View className="flex-row items-center justify-between gap-3 pr-1">
             <View
               style={{ padding: 20 }}
               className="border border-[#c29c70] rounded-full w-[35px] justify-center items-center aspect-square"
@@ -190,12 +191,16 @@ export default function JobCard({ Job, index }: any) {
                   return (
                     <View
                       key={index}
-                      className={`justify-center items-center rounded-full w-[29px] aspect-square border border-[#c29c70] ${value ? "bg-[#c29c70]" : ""}`}
+                      className={`justify-center items-center rounded-full w-[29px] aspect-square border border-[#c29c70] ${
+                        value ? "bg-[#c29c70]" : ""
+                      }`}
                     >
                       <Text
-                        className={`text-xs font-bold ${value ? "text-white" : "text-[#c29c70]"}`}
+                        className={`text-xs font-bold ${
+                          value ? "text-white" : "text-[#c29c70]"
+                        }`}
                       >
-                        {key}
+                        {t(`${key}`)}
                       </Text>
                     </View>
                   );
@@ -214,7 +219,7 @@ export default function JobCard({ Job, index }: any) {
 
           <View className="border border-x-0 border-b-0 border-t-[#c29c70]"></View>
 
-          <View className="flex-row justify-between gap-3 pb-2 px-4 items-center">
+          <View className="flex-row justify-between gap-3 pb-2 pr-1 items-center">
             <View
               style={{ padding: 20 }}
               className="border border-[#c29c70] rounded-full w-[35px] justify-center items-center aspect-square"

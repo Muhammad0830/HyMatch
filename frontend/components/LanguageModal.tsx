@@ -3,6 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import i18n from "@/i18";
+import { useTranslation } from "react-i18next";
 
 const LanguageModal = ({
   langModalVisible,
@@ -11,6 +12,8 @@ const LanguageModal = ({
   langModalVisible: boolean;
   setlangModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { t } = useTranslation();
+
   const changeLanguage = async (lang: "en" | "ja" | "uz") => {
     await i18n.changeLanguage(lang);
   };
@@ -23,9 +26,9 @@ const LanguageModal = ({
         onRequestClose={() => setlangModalVisible(false)} // Android back button
       >
         <View className="flex-1 justify-center w-full items-center bg-black/50">
-          <View className="bg-white rounded-xl p-4 gap-3">
+          <View className="bg-white rounded-xl p-4 gap-3 min-w-52">
             <View className="flex-row items-center gap-3 justify-between">
-              <Text className="text-lg font-bold">Langugage settings</Text>
+              <Text className="text-lg font-bold">{t("LanguageSettings")}</Text>
 
               <TouchableOpacity
                 className="bg-red-500 p-1.5 rounded-full"
