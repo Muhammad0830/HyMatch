@@ -75,7 +75,7 @@ export default function JobCard({ Job, index }: any) {
             >
               <FontAwesomeIcon icon={faBuilding} size={24} color="blue" />
             </View>
-            <Text className="text-2xl font-bold">{t("hello")}</Text>
+            <Text className="text-2xl font-bold">{Job.name}</Text>
           </View>
           <TouchableOpacity
             onPress={() => handleInfoPress()}
@@ -117,7 +117,7 @@ export default function JobCard({ Job, index }: any) {
                 <FontAwesomeIcon icon={faCoins} size={24} color="blue" />
               </View>
               <View>
-                <Text className="text-sm font-bold">{Job.price}</Text>
+                <Text className="text-sm font-bold">{Job.payment}</Text>
               </View>
             </View>
             <View className="w-[1px] border border-l-[#c29c70] border-r-0 h-[150%] "></View>
@@ -152,7 +152,7 @@ export default function JobCard({ Job, index }: any) {
               </View>
               <View>
                 <Text className="text-lg font-bold">
-                  {Job.fromHome}
+                  ~{Job.fromHome}
                   {t("min")}
                 </Text>
               </View>

@@ -3,12 +3,14 @@
         {
             "id": 1,
             "name": "hyMatch_job_01",
-            "type": "調理",
+            "type": "調理", 
             "icon": "utensils",
             "description": "調理",
-            "price": "¥1,030 - ¥1,130",
+            "payment": "¥1,030 - ¥1,130",
+            "averagePayment": 1100,
             "minLangLevel": "N3",
-            "fromHome": "~5",
+            "fromHome": 5,
+            "fromSchool": 10,
             "stationCode": "JU 01",
             "nearStationName": "東京駅",
             "workDay": {
@@ -27,7 +29,9 @@
                 "salaryIncrease": true,
                 "timeFlexiblity": false,
                 "5/7Workday": false
-            }
+            },
+            "postedAt": "2022-06-01T00:00:00.000Z",
+            "workingHoursByDay": "9"
         },
         {
             "id": 2,
@@ -35,9 +39,11 @@
             "type": "調理",
             "icon": "utensils",
             "description": "ファッション",
-            "price": "¥1,300 - ¥1,500",
+            "payment": "¥1,300 - ¥1,500",
+            "averagePayment": 1400,
             "minLangLevel": "N3",
-            "fromHome": "~5",
+            "fromHome": 15,
+            "fromSchool": 15,
             "stationCode": "新宿駅",
             "nearStationName": "新宿駅",
             "workDay": {
@@ -49,24 +55,28 @@
                 "Sat": true,
                 "Sun": false
             },
-            "time": "09:00 - 18:00",
+            "time": "09:00 - 17:00",
             "star": {
                 "nearStation": true,
                 "beginnerWelcome": true,
                 "salaryIncrease": true,
                 "timeFlexiblity": false,
                 "5/7Workday": false
-            }
+            },
+            "postedAt": "2022-04-01T00:00:00.000Z",
+            "workingHoursByDay": "8"
         },
         {
             "id": 3,
             "name": "hyMatch_job_03",
-            "type": "調理",
+            "type": "接客",
             "icon": "utensils",
             "description": "ファッション",
-            "price": "¥1,000 - ¥2,000",
+            "payment": "¥1,000 - ¥2,000",
+            "averagePayment": 1500,
             "minLangLevel": "N3",
-            "fromHome": "~10",
+            "fromHome": 10,
+            "fromSchool": 25,
             "stationCode": "JS 19",
             "nearStationName": "渋谷駅",
             "workDay": {
@@ -78,14 +88,16 @@
                 "Sat": false,
                 "Sun": false
             },
-            "time": "08:00 - 17:00",
+            "time": "08:00 - 19:00",
             "star": {
                 "nearStation": false,
                 "beginnerWelcome": true,
                 "salaryIncrease": false,
                 "timeFlexiblity": false,
                 "5/7Workday": true
-            }
+            },
+            "postedAt": "2023-06-01T00:00:00.000Z",
+            "workingHoursByDay": "10"
         }
     ],
     "RefusedData": [
