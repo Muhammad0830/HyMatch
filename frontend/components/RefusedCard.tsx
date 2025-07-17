@@ -85,7 +85,7 @@ export default function RefusedCard({ job, index }: any) {
         <View className="flex-row justify-between items-center mb-2 px-1 pt-4">
           <Text className="text-sm text-gray-600">{t(`${job.type}`)}</Text>
           <Text className="text-sm text-gray-700 font-semibold">
-            {job.price}
+            {job.payment}
           </Text>
         </View>
 

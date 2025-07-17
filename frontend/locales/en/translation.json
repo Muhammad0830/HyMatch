@@ -49,5 +49,15 @@
   "ホテル": "Hotel Work",
   "東京駅": "Tokyo Station",
   "新宿駅": "Shinjuku Station",
-  "渋谷駅": "Shibuya Station"
+  "渋谷駅": "Shibuya Station",
+  "new": "new",
+  "old": "old",
+  "noDateSort": "No Date Sort",
+  "highPaying": "High Paying",
+  "lowPaying": "Low Paying",
+  "noPaymentSort": "No Payment Sort",
+  "far": "Far",
+  "near": "Near",
+  "noByHomeSort": "No commute time sorting",
+  "noBySchoolSort": "No commute time sorting"
 }

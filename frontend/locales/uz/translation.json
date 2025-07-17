@@ -49,5 +49,15 @@
   "ホテル": "Mehmonxona ishi",
   "東京駅": "Tokyo stansiyasi",
   "新宿駅": "Shinjuku stansiyasi",
-  "渋谷駅": "Shibuya stansiyasi"
+  "渋谷駅": "Shibuya stansiyasi",
+  "new": "yangi",
+  "old": "eski",
+  "noDateSort": "Sana saralashisiz",
+  "highPaying": "Yuqori ish haqi",
+  "lowPaying": "Past ish haqi",
+  "noPaymentSort": "Ish haqi saralashisiz",
+  "far": "Uzoq",
+  "near": "Yaqin",
+  "noByHomeSort": "Yo'l vaqti saralashisiz",
+  "noBySchoolSort": "Yo'l vaqti saralashisiz"
 }
