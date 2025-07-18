@@ -9,11 +9,8 @@ export default function getFilteredAndSortedJobs(
 
   // Apply filters
   if (filter.jobType && filter.jobType.length > 0) {
+    console.log("jobType", filter.jobType);
     result = result.filter((job) => filter.jobType?.includes(job.type));
-  }
-
-  if (filter.starred !== undefined) {
-    result = result.filter((job) => job.starred === filter.starred);
   }
 
   // Apply sorting
@@ -46,6 +43,9 @@ export default function getFilteredAndSortedJobs(
         : b.fromSchool - a.fromSchool
     );
   }
-  console.log("filtering working");
+  console.log(
+    "filtering working result",
+    result.map((job) => job.name)
+  );
   return result;
 }

@@ -59,5 +59,6 @@
   "far": "Far",
   "near": "Near",
   "noByHomeSort": "No commute time sorting",
-  "noBySchoolSort": "No commute time sorting"
+  "noBySchoolSort": "No commute time sorting",
+  "noTypeFilter": "No job type filter"
 }

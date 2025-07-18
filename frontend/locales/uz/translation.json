@@ -59,5 +59,6 @@
   "far": "Uzoq",
   "near": "Yaqin",
   "noByHomeSort": "Yo'l vaqti saralashisiz",
-  "noBySchoolSort": "Yo'l vaqti saralashisiz"
+  "noBySchoolSort": "Yo'l vaqti saralashisiz",
+  "noTypeSort": "Ish turi saralashisiz"
 }

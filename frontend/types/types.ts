@@ -6,8 +6,8 @@ export type SortState = {
 };
 
 export type FilterState = {
-  jobType?: string;
+  jobType?: string[] | null;
   japaneseLevel?: string[];
-  hourlyRange?: [number, number];
-  starred?: boolean;
+  hourlyRange?: [number, number] | null;
+  starred?: boolean | null;
 };
