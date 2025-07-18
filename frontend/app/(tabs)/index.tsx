@@ -1,10 +1,10 @@
 import {
   View,
   BackHandler,
-  Alert,
   Text,
   TouchableOpacity,
   Animated,
+  Modal,
 } from "react-native";
 import "../globals.css";
 import { useFocusEffect } from "@react-navigation/native";
@@ -22,16 +22,13 @@ export default function Index() {
   const { data, setData } = useData();
   const [allJobs] = useState<any[]>([...data.jobsData]);
   const { t } = useTranslation();
+  const [isExitModelOpen, setIsExitModelOpen] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        // Exit app or show confirmation
-        Alert.alert(`${t("exitApp")}`, "", [
-          { text: `${t("Cancel")}`, style: "cancel" },
-          { text: `${t("Exit")}`, onPress: () => BackHandler.exitApp() },
-        ]);
-        return true; // 👈 prevents default tab back navigation
+        setIsExitModelOpen(true);
+        return true;
       };
 
       const subscription = BackHandler.addEventListener(
@@ -39,7 +36,7 @@ export default function Index() {
         onBackPress
       );
       return () => subscription.remove();
-    }, [t])
+    }, [])
   );
 
   const rotate = useRef(new Animated.Value(0)).current;
@@ -115,9 +112,7 @@ export default function Index() {
       ) : (
         <View className="items-center h-[83vh] px-1 justify-center">
           <Text className="text-xl">{t("noJobLeft")}</Text>
-          <Text className="mt-4 mb-2 text-lg">
-            {t("waitForJobs")}
-          </Text>
+          <Text className="mt-4 mb-2 text-lg">{t("waitForJobs")}</Text>
           <TouchableOpacity
             className="bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
             onPress={() => handleRefresh()}
@@ -133,6 +128,38 @@ export default function Index() {
           </TouchableOpacity>
         </View>
       )}
+
+      <View className="absolute top-0 left-0">
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={isExitModelOpen}
+          onRequestClose={() => setIsExitModelOpen(false)}
+        >
+          <View className="bg-black/30 h-screen justify-center items-center">
+            <View className="bg-white p-3 rounded-lg min-w-60 gap-6">
+              <Text className="text-lg font-bold">{t("exitApp")}</Text>
+              <View className="flex-row justify-between gap-4 items-center">
+                <TouchableOpacity
+                  className="bg-blue-700 px-3 py-2 rounded-md"
+                  onPress={() => setIsExitModelOpen(false)}
+                >
+                  <Text className="text-white">{t("Cancel")}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="bg-red-700 px-3 py-2 rounded-md"
+                  onPress={() => {
+                    BackHandler.exitApp();
+                    setIsExitModelOpen(false);
+                  }}
+                >
+                  <Text className="text-white">{t("Exit")}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </View>
   );
 }
