@@ -22,6 +22,14 @@ import {
 } from "@/constants/SortAndFilterData";
 import SortModal from "./SortModal";
 import FilterModal from "./FilterModal";
+import { faCircleDot } from "@fortawesome/free-regular-svg-icons";
+
+const defaultSortState: SortState = {
+  byHome: null,
+  bySchool: null,
+  byPayment: null,
+  byDate: null,
+};
 
 const defaultFilterState: FilterState = {
   jobType: [],
@@ -36,13 +44,6 @@ const defaultFilterState: FilterState = {
   },
 };
 
-const defaultSortState: SortState = {
-  byHome: null,
-  bySchool: null,
-  byPayment: null,
-  byDate: null,
-};
-
 const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   const { t } = useTranslation();
   const [modalSortOpen, setModalSortOpen] = useState(false);
@@ -54,8 +55,7 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   const [sortState, setSortState] = useState<SortState>(defaultSortState);
   const [filterState, setFilterState] =
     useState<FilterState>(defaultFilterState);
-  const [draftData, setDraftData] = useState<any[]>([...Data.jobsData]);
-  console.log("filterState", filterState);
+  const [draftData] = useState<any[]>([...Data.jobsData]);
 
   const activeSort = useMemo(() => {
     const entry = Object.entries(sortState).find(
@@ -65,6 +65,23 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
 
     return entry ? { key: entry[0], value: entry[1] } : null;
   }, [sortState]);
+
+  const isFilterActive = (title: string) => {
+    switch (title) {
+      case "DesiredJobType":
+        if (filterState.jobType) return filterState?.jobType?.length > 0;
+      case "JapaneseLevel":
+        if (filterState.japaneseLevel)
+          return filterState.japaneseLevel.length > 0;
+      case "WorkHoursRange":
+        return filterState.hourlyRange !== null;
+      case "Starred":
+        if (filterState.starred)
+          return Object.values(filterState.starred).some((v) => v === true);
+      default:
+        return false;
+    }
+  };
 
   const filteredSortedJobs = useMemo(() => {
     return getFilteredAndSortedJobs(draftData, filterState, sortState);
@@ -84,7 +101,10 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
         <Text className="text-2xl font-bold">{t("Sort")}</Text>
         <View className="flex-row items-center gap-2">
           <TouchableOpacity
-            onPress={() => setSortState(defaultSortState)}
+            onPress={() => {
+              setSortState(defaultSortState);
+              setFilterState(defaultFilterState);
+            }}
             className="w-[30px] aspect-square rounded-full bg-blue-700 justify-center items-center"
           >
             <FontAwesomeIcon
@@ -129,11 +149,11 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
                   </View>
                   <View className="flex-row items-center gap-1">
                     {sort.name === activeSort?.key ? (
-                      <View className="p-1.5 bg-blue-700 rounded-full items-center justify-center">
+                      <View className="p-1 bg-blue-700 rounded-full items-center justify-center">
                         {activeSort.value === "desc" ? (
                           <FontAwesomeIcon
                             icon={faArrowDownWideShort}
-                            size={18}
+                            size={16}
                             color="white"
                           />
                         ) : (
@@ -176,17 +196,28 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
                     setSelectedFilter(filter);
                   }}
                 >
-                  <View className="flex-row items-center gap-3">
-                    <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
-                      <FontAwesomeIcon
-                        icon={filter.icon}
-                        size={20}
-                        color={"#fff"}
-                      />
+                  <View className="flex-row items-center gap-3 justify-between">
+                    <View className="flex-row gap-3 items-center">
+                      <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
+                        <FontAwesomeIcon
+                          icon={filter.icon}
+                          size={20}
+                          color={"#fff"}
+                        />
+                      </View>
+                      <Text className="text-black font-bold text-md">
+                        {t(`${filter.title}`)}
+                      </Text>
                     </View>
-                    <Text className="text-black font-bold text-md">
-                      {filter.title}
-                    </Text>
+                    {isFilterActive(filter.title) ? (
+                      <View>
+                        <FontAwesomeIcon
+                          icon={faCircleDot}
+                          size={22}
+                          color={"blue"}
+                        />
+                      </View>
+                    ) : null}
                   </View>
                 </TouchableOpacity>
                 {index + 1 === array.length ? null : (

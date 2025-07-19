@@ -84,18 +84,18 @@ export const createSortData: CreateSortDataFn = (t, setSortState) => [
 export const createFilterData = (t: (key: string) => string) => [
   {
     icon: faFileExcel,
-    title: t("DesiredJobType"),
+    title: "DesiredJobType",
   },
   {
     icon: faComments,
-    title: t("JapaneseLevel"),
+    title: "JapaneseLevel",
   },
   {
     icon: faClockFour,
-    title: t("WorkHoursRange"),
+    title: "WorkHoursRange",
   },
   {
     icon: faStar,
-    title: t("Starred"),
+    title: "Starred",
   },
 ];

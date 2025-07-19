@@ -19,7 +19,6 @@ const calculateSalary = (
     job.workDay,
     job.workingHoursByDay
   );
-  console.log("salary", hoursPerWeek * hourly);
 
   switch (unit) {
     case "daily":
@@ -44,7 +43,6 @@ export default function getFilteredAndSortedJobs(
 
   // Apply filters
   if (filter.jobType && filter.jobType.length > 0) {
-    console.log("jobType", filter.jobType);
     result = result.filter((job) => filter.jobType?.includes(job.type));
   }
 
@@ -54,12 +52,6 @@ export default function getFilteredAndSortedJobs(
     );
   }
 
-  console.log(
-    "hourlyRange",
-    filter.hourlyRange,
-    "salaryUnit",
-    filter.salaryUnit
-  );
   if (filter.hourlyRange && filter.salaryUnit) {
     const { from, to } = filter.hourlyRange;
     result = result.filter((job) => {
@@ -106,9 +98,6 @@ export default function getFilteredAndSortedJobs(
         : b.fromSchool - a.fromSchool
     );
   }
-  console.log(
-    "filtering working result",
-    result.map((job) => job.name)
-  );
+
   return result;
 }

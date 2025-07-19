@@ -4,7 +4,6 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  ScrollView,
   Animated,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
@@ -24,7 +23,7 @@ const FilterModal = ({
 }: any) => {
   const { t } = useTranslation();
 
-  const [jobTypeOptions, setJobTypeOptions] = useState([
+  const [jobTypeOptions] = useState([
     "調理",
     "接客",
     "清掃",
@@ -32,19 +31,13 @@ const FilterModal = ({
     "宅配",
     "ホテル",
   ]);
-  const [japaneseLevelOptions, setJapaneseLevelOptions] = useState([
-    "N5",
-    "N4",
-    "N3",
-    "N2",
-    "N1",
-  ]);
-  const starOptions: { key: keyof StarredCriteria; label: string }[] = [
-    { key: "nearStation", label: "駅近" },
-    { key: "beginnerWelcome", label: "初心者歓迎" },
-    { key: "salaryIncrease", label: "昇給あり" },
-    { key: "timeFlexiblity", label: "時間の融通" },
-    { key: "5/7Workday", label: "週5日勤務" },
+  const [japaneseLevelOptions] = useState(["N5", "N4", "N3", "N2", "N1"]);
+  const starOptions: { key: keyof StarredCriteria }[] = [
+    { key: "nearStation" },
+    { key: "beginnerWelcome" },
+    { key: "salaryIncrease" },
+    { key: "timeFlexiblity" },
+    { key: "5/7Workday" },
   ];
 
   const [tempState, setTempState] = useState<FilterState>({
@@ -160,7 +153,7 @@ const FilterModal = ({
 
   const renderOptions = () => {
     switch (selectedFilter?.title) {
-      case t("DesiredJobType"):
+      case "DesiredJobType":
         return jobTypeOptions.map((type) => (
           <TouchableOpacity
             key={type}
@@ -178,7 +171,7 @@ const FilterModal = ({
           </TouchableOpacity>
         ));
 
-      case t("JapaneseLevel"):
+      case "JapaneseLevel":
         return japaneseLevelOptions.map((level) => (
           <TouchableOpacity
             key={level}
@@ -198,7 +191,7 @@ const FilterModal = ({
           </TouchableOpacity>
         ));
 
-      case t("WorkHoursRange"):
+      case "WorkHoursRange":
         return (
           <View>
             {/* Unit selector */}
@@ -238,7 +231,7 @@ const FilterModal = ({
                           selectedUnit === unit ? "text-white" : "text-black"
                         }`}
                       >
-                        {unit.toUpperCase()}
+                        {t(`${unit}`)}
                       </Text>
                     </Animated.View>
 
@@ -255,7 +248,7 @@ const FilterModal = ({
 
             <View className="w-full justify-center items-center">
               <Text className="capitalize text-lg font-bold">
-                {selectedUnit} {t("Range")}
+                {t(`${selectedUnit} range`)}
               </Text>
             </View>
             <Text
@@ -297,7 +290,7 @@ const FilterModal = ({
           </View>
         );
 
-      case t("Starred"):
+      case "Starred":
         return starOptions.map((star) => (
           <TouchableOpacity
             key={star.key}
@@ -311,7 +304,7 @@ const FilterModal = ({
             >
               <FontAwesomeIcon icon={faCheck} size={12} color="white" />
             </View>
-            <Text>{star.label}</Text>
+            <Text>{t(`${star.key}`)}</Text>
           </TouchableOpacity>
         ));
 
@@ -330,7 +323,9 @@ const FilterModal = ({
       <View className="bg-black/30 flex-1 justify-center items-center">
         <View className="bg-white rounded-xl p-4 gap-3 min-w-64 w-auto max-h-[90%]">
           <View className="flex-row justify-between items-center">
-            <Text className="text-lg font-bold">{selectedFilter?.title}</Text>
+            <Text className="text-lg font-bold">
+              {t(`${selectedFilter?.title}`)}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 setModalOpen(false);
