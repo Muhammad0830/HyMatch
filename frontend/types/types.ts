@@ -23,5 +23,5 @@ export type FilterState = {
   japaneseLevel?: string[];
   hourlyRange?: HourlyRange | null;
   starred?: StarredCriteria;
-  salaryUnit?: "hourly" | "weekly" | "monthly" | "yearly";
+  salaryUnit?: "hourly" | "daily" | "weekly" | "monthly" | "yearly";
 };

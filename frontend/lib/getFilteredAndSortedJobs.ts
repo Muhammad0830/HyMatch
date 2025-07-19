@@ -2,14 +2,28 @@ import { FilterState, SortState } from "@/types/types";
 
 const calculateSalary = (
   job: any,
-  unit: "hourly" | "weekly" | "monthly" | "yearly"
+  unit: "hourly" | "daily" | "weekly" | "monthly" | "yearly"
 ) => {
   const hourly = job.averagePayment;
-  const hoursPerWeek = Object.values(job.workingHoursByDay || {}).reduce(
-    (sum, dayHours) => sum + dayHours,
-    0
+  const getWeeklyWorkingHours = (
+    workDay: Record<string, boolean>,
+    workingHoursByDay: string | number
+  ): number => {
+    const daysWorkedPerWeek = Object.values(workDay || {}).filter(
+      Boolean
+    ).length;
+    const dailyHours = Number(workingHoursByDay) || 0;
+    return daysWorkedPerWeek * dailyHours;
+  };
+  const hoursPerWeek = getWeeklyWorkingHours(
+    job.workDay,
+    job.workingHoursByDay
   );
+  console.log("salary", hoursPerWeek * hourly);
+
   switch (unit) {
+    case "daily":
+      return hourly * (Number(job.workingHoursByDay) || 0);
     case "weekly":
       return hourly * hoursPerWeek;
     case "monthly":
@@ -17,7 +31,7 @@ const calculateSalary = (
     case "yearly":
       return hourly * hoursPerWeek * 52;
     default:
-      return hourly;
+      return hourly; // hourly case
   }
 };
 
@@ -40,13 +54,18 @@ export default function getFilteredAndSortedJobs(
     );
   }
 
-  console.log("hourlyRange", filter.hourlyRange);
-  if (filter.hourlyRange) {
+  console.log(
+    "hourlyRange",
+    filter.hourlyRange,
+    "salaryUnit",
+    filter.salaryUnit
+  );
+  if (filter.hourlyRange && filter.salaryUnit) {
     const { from, to } = filter.hourlyRange;
-    console.log("from", from, "to", to);
-    result = result.filter(
-      (job) => job.averagePayment >= from && job.averagePayment <= to
-    );
+    result = result.filter((job) => {
+      const salary = calculateSalary(job, filter.salaryUnit!);
+      return salary >= from && salary <= to;
+    });
   }
 
   if (filter.starred) {

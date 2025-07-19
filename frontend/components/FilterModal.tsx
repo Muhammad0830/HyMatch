@@ -51,6 +51,9 @@ const FilterModal = ({
     starred: {},
   });
 
+  const [selectedUnit, setSelectedUnit] = useState<
+    "hourly" | "daily" | "weekly" | "monthly" | "yearly"
+  >("hourly");
   const [hourlyFrom, setHourlyFrom] = useState("");
   const [hourlyTo, setHourlyTo] = useState("");
 
@@ -81,18 +84,6 @@ const FilterModal = ({
     }));
   };
 
-  const applyHourlyRange = () => {
-    if (hourlyFrom && hourlyTo) {
-      setTempState((prev) => ({
-        ...prev,
-        hourlyRange: {
-          from: Number(hourlyFrom),
-          to: Number(hourlyTo),
-        },
-      }));
-    }
-  };
-
   const applyFilters = () => {
     let updatedTempState = { ...tempState };
 
@@ -107,17 +98,19 @@ const FilterModal = ({
           from: Number(hourlyFrom),
           to: Number(hourlyTo),
         },
+        salaryUnit: selectedUnit, // ✅ ADD THIS
       };
     }
-    
+
     setTempState(updatedTempState);
 
     setFilterState((prev: FilterState) => ({
       ...prev,
       ...updatedTempState,
     }));
+
     console.log("tempState before applying:", tempState);
-    console.log("final hourlyRange:", tempState.hourlyRange);
+    console.log("final hourlyRange:", updatedTempState.hourlyRange);
     setModalOpen(false);
   };
 
@@ -172,7 +165,40 @@ const FilterModal = ({
 
       case t("WorkHoursRange"):
         return (
-          <View className="gap-2 mt-2">
+          <View className="gap-2">
+            {/* Unit selector */}
+            <View className="mb-2 border border-black/30 p-3 rounded-md overflow-hidden">
+              {["hourly", "daily", "weekly", "monthly", "yearly"].map(
+                (unit, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => setSelectedUnit(unit as any)}
+                    className={`flex-row items-center p-2 gap-2 ${
+                      index === 4 ? "border-b-0" : "border-b border-black/30"
+                    }`}
+                  >
+                    <View className="p-1.5 rounded-full border z-10">
+                      <FontAwesomeIcon icon={faCheck} size={12} color="white" />
+                    </View>
+                    <Text
+                      className={
+                        selectedUnit === unit
+                          ? "text-blue-500 z-10"
+                          : "text-black z-10"
+                      }
+                    >
+                      {unit.toUpperCase()}
+                    </Text>
+                    <View
+                      className={`absolute top-0 bottom-0 left-0 right-0 z-0 ${
+                        index === 0 ? "bg-blue-300" : ""
+                      }`}
+                    ></View>
+                  </TouchableOpacity>
+                )
+              )}
+            </View>
+
             <Text>{t("From")}:</Text>
             <TextInput
               className="border rounded p-2"
