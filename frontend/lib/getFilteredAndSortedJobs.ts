@@ -1,5 +1,26 @@
 import { FilterState, SortState } from "@/types/types";
 
+const calculateSalary = (
+  job: any,
+  unit: "hourly" | "weekly" | "monthly" | "yearly"
+) => {
+  const hourly = job.averagePayment;
+  const hoursPerWeek = Object.values(job.workingHoursByDay || {}).reduce(
+    (sum, dayHours) => sum + dayHours,
+    0
+  );
+  switch (unit) {
+    case "weekly":
+      return hourly * hoursPerWeek;
+    case "monthly":
+      return hourly * hoursPerWeek * 4;
+    case "yearly":
+      return hourly * hoursPerWeek * 52;
+    default:
+      return hourly;
+  }
+};
+
 export default function getFilteredAndSortedJobs(
   jobs: any[],
   filter: FilterState,
@@ -11,6 +32,29 @@ export default function getFilteredAndSortedJobs(
   if (filter.jobType && filter.jobType.length > 0) {
     console.log("jobType", filter.jobType);
     result = result.filter((job) => filter.jobType?.includes(job.type));
+  }
+
+  if (Array.isArray(filter.japaneseLevel) && filter.japaneseLevel.length > 0) {
+    result = result.filter((job) =>
+      filter.japaneseLevel!.includes(job.japaneseLevel)
+    );
+  }
+
+  console.log("hourlyRange", filter.hourlyRange);
+  if (filter.hourlyRange) {
+    const { from, to } = filter.hourlyRange;
+    console.log("from", from, "to", to);
+    result = result.filter(
+      (job) => job.averagePayment >= from && job.averagePayment <= to
+    );
+  }
+
+  if (filter.starred) {
+    result = result.filter((job) =>
+      Object.entries(filter.starred!).every(
+        ([key, val]) => val === false || job.star?.[key] === val
+      )
+    );
   }
 
   // Apply sorting

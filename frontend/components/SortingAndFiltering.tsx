@@ -24,10 +24,16 @@ import SortModal from "./SortModal";
 import FilterModal from "./FilterModal";
 
 const defaultFilterState: FilterState = {
-  jobType: null,
+  jobType: [],
   japaneseLevel: [],
   hourlyRange: null,
-  starred: null,
+  starred: {
+    nearStation: false,
+    beginnerWelcome: false,
+    salaryIncrease: false,
+    timeFlexiblity: false,
+    "5/7Workday": false,
+  },
 };
 
 const defaultSortState: SortState = {

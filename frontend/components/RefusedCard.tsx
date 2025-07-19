@@ -46,6 +46,7 @@ export default function RefusedCard({ job, index }: any) {
   });
 
   const truthyCount = Object.values(job.workDay).filter(Boolean).length;
+  const minLevel = job.japaneseLevel[0];
 
   return (
     <TouchableOpacity
@@ -91,7 +92,7 @@ export default function RefusedCard({ job, index }: any) {
 
         <View className="flex-row justify-between items-center px-1">
           <Text className="text-sm text-gray-600">
-            {t("Level")}: {job.minLangLevel}
+            {t("Level")}: {minLevel}
           </Text>
           <Text className="text-sm text-gray-600">
             {t("days_per_week", { count: truthyCount })}
