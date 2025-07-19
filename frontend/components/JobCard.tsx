@@ -64,6 +64,8 @@ export default function JobCard({ Job, index }: any) {
     },
   ];
 
+  const minLevel = Job.japaneseLevel[0];
+
   return (
     <View className="top-5 w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center">
       <View className={`bg-white w-full rounded-2xl flex-1 p-2`}>
@@ -129,7 +131,7 @@ export default function JobCard({ Job, index }: any) {
                 <FontAwesomeIcon icon={faGlobe} size={24} color="blue" />
               </View>
               <View className="flex-1 items-center mr-2">
-                <Text className="text-lg font-bold">{Job.minLangLevel}</Text>
+                <Text className="text-lg font-bold">{minLevel}</Text>
               </View>
             </View>
           </View>
@@ -171,7 +173,9 @@ export default function JobCard({ Job, index }: any) {
                     {Job.stationCode}
                   </Text>
                 </View>
-                <Text className="font-bold text-sm text-center">{t(`${Job.nearStationName}`)}</Text>
+                <Text className="font-bold text-sm text-center">
+                  {t(`${Job.nearStationName}`)}
+                </Text>
               </View>
             </View>
           </View>

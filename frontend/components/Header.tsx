@@ -12,7 +12,7 @@ import LanguageModal from "./LanguageModal";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClose, faGlobe } from "@fortawesome/free-solid-svg-icons";
-import SortModal from "./SortModal";
+import SortAndFiltering from "./SortingAndFiltering";
 
 const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
   const translateX = useSharedValue(-150);
@@ -183,7 +183,7 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
         className={`absolute z-20 border border-black border-r-0 rounded-tl-lg rounded-bl-lg w-[85%] px-4 py-4 right-0 top-2 rounded-tr-lg rounded-br-lg bg-white`}
         style={animatedStyleSort}
       >
-        <SortModal handleSortPress={handleSortPress} />
+        <SortAndFiltering handleSortPress={handleSortPress} />
       </Animated.View>
 
       <LanguageModal

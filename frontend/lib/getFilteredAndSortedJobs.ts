@@ -1,5 +1,40 @@
 import { FilterState, SortState } from "@/types/types";
 
+const calculateSalary = (
+  job: any,
+  unit: "hourly" | "daily" | "weekly" | "monthly" | "yearly"
+) => {
+  const hourly = job.averagePayment;
+  const getWeeklyWorkingHours = (
+    workDay: Record<string, boolean>,
+    workingHoursByDay: string | number
+  ): number => {
+    const daysWorkedPerWeek = Object.values(workDay || {}).filter(
+      Boolean
+    ).length;
+    const dailyHours = Number(workingHoursByDay) || 0;
+    return daysWorkedPerWeek * dailyHours;
+  };
+  const hoursPerWeek = getWeeklyWorkingHours(
+    job.workDay,
+    job.workingHoursByDay
+  );
+  console.log("salary", hoursPerWeek * hourly);
+
+  switch (unit) {
+    case "daily":
+      return hourly * (Number(job.workingHoursByDay) || 0);
+    case "weekly":
+      return hourly * hoursPerWeek;
+    case "monthly":
+      return hourly * hoursPerWeek * 4;
+    case "yearly":
+      return hourly * hoursPerWeek * 52;
+    default:
+      return hourly; // hourly case
+  }
+};
+
 export default function getFilteredAndSortedJobs(
   jobs: any[],
   filter: FilterState,
@@ -9,11 +44,36 @@ export default function getFilteredAndSortedJobs(
 
   // Apply filters
   if (filter.jobType && filter.jobType.length > 0) {
+    console.log("jobType", filter.jobType);
     result = result.filter((job) => filter.jobType?.includes(job.type));
   }
 
-  if (filter.starred !== undefined) {
-    result = result.filter((job) => job.starred === filter.starred);
+  if (Array.isArray(filter.japaneseLevel) && filter.japaneseLevel.length > 0) {
+    result = result.filter((job) =>
+      filter.japaneseLevel!.includes(job.japaneseLevel)
+    );
+  }
+
+  console.log(
+    "hourlyRange",
+    filter.hourlyRange,
+    "salaryUnit",
+    filter.salaryUnit
+  );
+  if (filter.hourlyRange && filter.salaryUnit) {
+    const { from, to } = filter.hourlyRange;
+    result = result.filter((job) => {
+      const salary = calculateSalary(job, filter.salaryUnit!);
+      return salary >= from && salary <= to;
+    });
+  }
+
+  if (filter.starred) {
+    result = result.filter((job) =>
+      Object.entries(filter.starred!).every(
+        ([key, val]) => val === false || job.star?.[key] === val
+      )
+    );
   }
 
   // Apply sorting
@@ -46,6 +106,9 @@ export default function getFilteredAndSortedJobs(
         : b.fromSchool - a.fromSchool
     );
   }
-  console.log("filtering working");
+  console.log(
+    "filtering working result",
+    result.map((job) => job.name)
+  );
   return result;
 }

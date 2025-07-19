@@ -59,5 +59,6 @@
   "far": "遠い",
   "near": "近い",
   "noByHomeSort": "通勤時間のソートなし",
-  "noBySchoolSort": "通勤時間のソートなし"
+  "noBySchoolSort": "通勤時間のソートなし",
+  "noTypeFilter": "希望職種のフィルターなし"
 }
