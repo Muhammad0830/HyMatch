@@ -5,12 +5,15 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Animated,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { FilterState, StarredCriteria } from "@/types/types";
+
+const units = ["hourly", "daily", "weekly", "monthly", "yearly"];
 
 const FilterModal = ({
   modalOpen,
@@ -56,6 +59,41 @@ const FilterModal = ({
   >("hourly");
   const [hourlyFrom, setHourlyFrom] = useState("");
   const [hourlyTo, setHourlyTo] = useState("");
+  // animation
+  const [focusedInput, setFocusedInput] = useState<"from" | "to" | null>(null);
+  const animations = useRef(
+    units.reduce((acc, unit) => {
+      acc[unit] = {
+        bg: new Animated.Value(unit === selectedUnit ? 0 : -120),
+        iconMargin: new Animated.Value(unit === selectedUnit ? 10 : 30),
+        containerX: new Animated.Value(unit === selectedUnit ? 0 : -40),
+      };
+      return acc;
+    }, {} as Record<string, { bg: Animated.Value; iconMargin: Animated.Value; containerX: Animated.Value }>)
+  ).current;
+
+  useEffect(() => {
+    units.forEach((unit) => {
+      const isSelected = unit === selectedUnit;
+      Animated.parallel([
+        Animated.timing(animations[unit].bg, {
+          toValue: isSelected ? 0 : -220,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animations[unit].iconMargin, {
+          toValue: isSelected ? 10 : 30,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(animations[unit].containerX, {
+          toValue: isSelected ? 2 : -50,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  }, [selectedUnit, animations]);
 
   const toggleItem = (key: string, value: string) => {
     setTempState((prev) => {
@@ -109,8 +147,6 @@ const FilterModal = ({
       ...updatedTempState,
     }));
 
-    console.log("tempState before applying:", tempState);
-    console.log("final hourlyRange:", updatedTempState.hourlyRange);
     setModalOpen(false);
   };
 
@@ -121,7 +157,6 @@ const FilterModal = ({
     setFilterState(defaultFilterState);
     setModalOpen(false);
   };
-  console.log("tempState", tempState);
 
   const renderOptions = () => {
     switch (selectedFilter?.title) {
@@ -165,7 +200,7 @@ const FilterModal = ({
 
       case t("WorkHoursRange"):
         return (
-          <View className="gap-2">
+          <View>
             {/* Unit selector */}
             <View className="mb-2 border border-black/30 p-3 rounded-md overflow-hidden">
               {["hourly", "daily", "weekly", "monthly", "yearly"].map(
@@ -173,47 +208,91 @@ const FilterModal = ({
                   <TouchableOpacity
                     key={index}
                     onPress={() => setSelectedUnit(unit as any)}
-                    className={`flex-row items-center p-2 gap-2 ${
+                    className={`flex-row items-center p-1.5 gap-2 rounded-md overflow-hidden ${
                       index === 4 ? "border-b-0" : "border-b border-black/30"
                     }`}
                   >
-                    <View className="p-1.5 rounded-full border z-10">
-                      <FontAwesomeIcon icon={faCheck} size={12} color="white" />
-                    </View>
-                    <Text
-                      className={
-                        selectedUnit === unit
-                          ? "text-blue-500 z-10"
-                          : "text-black z-10"
-                      }
+                    <Animated.View
+                      className="flex-row items-center z-10"
+                      style={{
+                        transform: [
+                          { translateX: animations[unit].containerX },
+                        ],
+                      }}
                     >
-                      {unit.toUpperCase()}
-                    </Text>
-                    <View
-                      className={`absolute top-0 bottom-0 left-0 right-0 z-0 ${
-                        index === 0 ? "bg-blue-300" : ""
-                      }`}
-                    ></View>
+                      <Animated.View
+                        style={{
+                          marginRight: animations[unit].iconMargin,
+                        }}
+                      >
+                        <View className="p-1.5 rounded-full z-10 bg-green-400">
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            size={8}
+                            color="white"
+                          />
+                        </View>
+                      </Animated.View>
+                      <Text
+                        className={`z-10 ${
+                          selectedUnit === unit ? "text-white" : "text-black"
+                        }`}
+                      >
+                        {unit.toUpperCase()}
+                      </Text>
+                    </Animated.View>
+
+                    <Animated.View
+                      className="absolute top-0 bottom-0 left-0 right-0 bg-blue-500 z-0"
+                      style={{
+                        transform: [{ translateX: animations[unit].bg }],
+                      }}
+                    />
                   </TouchableOpacity>
                 )
               )}
             </View>
 
-            <Text>{t("From")}:</Text>
+            <View className="w-full justify-center items-center">
+              <Text className="capitalize text-lg font-bold">
+                {selectedUnit} {t("Range")}
+              </Text>
+            </View>
+            <Text
+              className="text-sm"
+              style={{ transform: [{ translateY: 2 }] }}
+            >
+              {t("From")}:
+            </Text>
             <TextInput
-              className="border rounded p-2"
+              className={`border rounded-lg p-2 ${
+                focusedInput === "from" ? "border-blue-500" : "border-black/50"
+              }`}
               keyboardType="numeric"
               value={hourlyFrom}
               onChangeText={setHourlyFrom}
-              placeholder="e.g. 1000"
+              placeholder="¥"
+              placeholderTextColor="#9ce2fe"
+              onFocus={() => setFocusedInput("from")}
+              onBlur={() => setFocusedInput(null)}
             />
-            <Text>{t("To")}:</Text>
+            <Text
+              className="text-sm"
+              style={{ transform: [{ translateY: 2 }] }}
+            >
+              {t("To")}:
+            </Text>
             <TextInput
-              className="border rounded p-2"
+              className={`border rounded-lg p-2 ${
+                focusedInput === "to" ? "border-blue-500" : "border-black/50"
+              }`}
               keyboardType="numeric"
               value={hourlyTo}
               onChangeText={setHourlyTo}
-              placeholder="e.g. 1500"
+              placeholder="¥"
+              placeholderTextColor="#9ce2fe"
+              onFocus={() => setFocusedInput("to")}
+              onBlur={() => setFocusedInput(null)}
             />
           </View>
         );
@@ -253,24 +332,33 @@ const FilterModal = ({
           <View className="flex-row justify-between items-center">
             <Text className="text-lg font-bold">{selectedFilter?.title}</Text>
             <TouchableOpacity
-              onPress={() => setModalOpen(false)}
+              onPress={() => {
+                setModalOpen(false);
+                setFocusedInput(null);
+              }}
               className="bg-red-600 p-1.5 rounded-full"
             >
               <FontAwesomeIcon icon={faClose} size={16} color="white" />
             </TouchableOpacity>
           </View>
 
-          <ScrollView className="mt-2">{renderOptions()}</ScrollView>
+          <View className="mt-1">{renderOptions()}</View>
 
-          <View className="flex-row justify-between gap-2 mt-4">
+          <View className="flex-row justify-between gap-2 mt-2">
             <TouchableOpacity
-              onPress={clearFilter}
+              onPress={() => {
+                clearFilter();
+                setFocusedInput(null);
+              }}
               className="bg-gray-300 rounded px-4 py-2 flex-1"
             >
               <Text className="text-center text-black">{t("Clear")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={applyFilters}
+              onPress={() => {
+                applyFilters();
+                setFocusedInput(null);
+              }}
               className="bg-blue-600 rounded px-4 py-2 flex-1"
             >
               <Text className="text-center text-white">{t("Apply")}</Text>
