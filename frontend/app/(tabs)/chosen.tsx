@@ -16,7 +16,7 @@ const Chosen = () => {
   const router = useRouter();
   const { data } = useData();
   const [chosenData, setChosenData] = React.useState([]);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
     setChosenData(data.ChosenData);
@@ -26,7 +26,7 @@ const Chosen = () => {
     useCallback(() => {
       const onBackPress = () => {
         router.replace("/");
-        return true; // prevent default
+        return true;
       };
 
       const subscription = BackHandler.addEventListener(
@@ -48,9 +48,7 @@ const Chosen = () => {
           </View>
         ) : (
           <View className="w-full h-full min-h-[80vh] items-center flex-1 justify-center">
-            <Text className="text-xl text-center">
-              {t("noChosen")}
-            </Text>
+            <Text className="text-xl text-center">{t("noChosen")}</Text>
             <Text className="text-center text-xl mb-2 mt-5">
               {t("nextAction?")}
             </Text>
