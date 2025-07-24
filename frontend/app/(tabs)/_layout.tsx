@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import AnimatedTabIcon from "@/components/AnimatedTabIcon"; // adjust path as needed
+import AnimatedTabIcon from "@/components/AnimatedTabIcon";
 import { StatusBar } from "react-native";
 import Header from "@/components/Header";
 

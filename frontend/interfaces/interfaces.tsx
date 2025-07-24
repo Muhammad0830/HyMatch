@@ -34,6 +34,8 @@ export interface FilterDataProps {
 export type DataContextType = {
   data: any;
   setData: React.Dispatch<React.SetStateAction<any>>;
+  profileData: any;
+  setProfileData: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type CreateSortDataFn = (
