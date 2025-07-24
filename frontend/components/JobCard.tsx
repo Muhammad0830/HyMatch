@@ -64,7 +64,7 @@ export default function JobCard({ Job, index }: any) {
     },
   ];
 
-  const minLevel = Job.japaneseLevel[0];
+  const minLevel = Job.japaneseLevel;
 
   return (
     <View className="top-5 w-full min-h-[90vh] text-center gap-1 py-[10px] px-[10px] items-center">

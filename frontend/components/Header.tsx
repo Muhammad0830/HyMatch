@@ -151,7 +151,10 @@ const Header = ({ title, leftIcon, rightIcon, isIndexHeader }: HeaderProps) => {
           </View>
 
           <View className="mt-4 p-3 border rounded-md border-black/30 gap-2">
-            <TouchableOpacity className="flex-row items-center gap-3">
+            <TouchableOpacity
+              className="flex-row items-center gap-3"
+              onPress={() => router.push("/profile/profile")}
+            >
               <View className="w-[30px] aspect-square justify-center items-center rounded-full bg-[#c29c70]">
                 <FontAwesome name="user" size={20} color={"#fff"} />
               </View>
