@@ -55,7 +55,7 @@ export default function _layout() {
               />
             ),
             tabBarButton: (props) => {
-              return <AnimatedTabIcon {...props} icon="phone" />;
+              return <AnimatedTabIcon {...props} isIndex icon="phone" />;
             },
           }}
         />
