@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -23,6 +23,7 @@ import {
 import SortModal from "./SortModal";
 import FilterModal from "./FilterModal";
 import { faCircleDot } from "@fortawesome/free-regular-svg-icons";
+import { useData } from "@/contexts/DataContext";
 
 const defaultSortState: SortState = {
   byHome: null,
@@ -53,9 +54,14 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
     null
   );
   const [sortState, setSortState] = useState<SortState>(defaultSortState);
-  const [filterState, setFilterState] =
-    useState<FilterState>(defaultFilterState);
   const [draftData] = useState<any[]>([...Data.jobsData]);
+  const {
+    data,
+    setFilteredChosen,
+    setFilteredRefused,
+    filterState,
+    setFilterState,
+  } = useData();
 
   const activeSort = useMemo(() => {
     const entry = Object.entries(sortState).find(
@@ -86,14 +92,30 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   const filteredSortedJobs = useMemo(() => {
     return getFilteredAndSortedJobs(draftData, filterState, sortState);
   }, [draftData, filterState, sortState]);
+  console.log("filteredSortedJobs", filteredSortedJobs);
+
+  const filteredChosenJobs = useMemo(() => {
+    return getFilteredAndSortedJobs(data.ChosenData, filterState, sortState);
+  }, [data.ChosenData, filterState, sortState]);
+
+  const filteredRefusedJobs = useMemo(() => {
+    return getFilteredAndSortedJobs(data.RefusedData, filterState, sortState);
+  }, [data.RefusedData, filterState, sortState]);
+
+  console.log("filterState", filterState);
+
+  useEffect(() => {
+    setFilteredChosen(filteredChosenJobs);
+    setFilteredRefused(filteredRefusedJobs);
+  }, [
+    filteredChosenJobs,
+    filteredRefusedJobs,
+    setFilteredChosen,
+    setFilteredRefused,
+  ]);
 
   const sortData = createSortData(t, setSortState);
   const filterData = createFilterData(t);
-
-  console.log(
-    "filteredData",
-    filteredSortedJobs.map((job) => job.name)
-  );
 
   return (
     <View className="flex-1 w-full h-full bg-white gap-2">

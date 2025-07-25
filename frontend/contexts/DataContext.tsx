@@ -3,6 +3,20 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import defaultData from "../data.json";
 import defaultprofileData from "../profileData.json";
 import { DataContextType } from "@/interfaces/interfaces";
+import { FilterState } from "@/types/types";
+
+const defaultFilterState: FilterState = {
+  jobType: [],
+  japaneseLevel: [],
+  hourlyRange: null,
+  starred: {
+    nearStation: false,
+    beginnerWelcome: false,
+    salaryIncrease: false,
+    timeFlexiblity: false,
+    "5/7Workday": false,
+  },
+};
 
 const DataContext = createContext<DataContextType | null>(null);
 
@@ -15,6 +29,12 @@ export const useData = () => {
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [data, setData] = useState<any>(defaultData);
   const [profileData, setProfileData] = useState<any>(defaultprofileData);
+  const [filteredChosen, setFilteredChosen] = useState<any[]>(data.ChosenData);
+  const [filteredRefused, setFilteredRefused] = useState<any[]>(
+    data.RefusedData
+  );
+  const [filterState, setFilterState] =
+    useState<FilterState>(defaultFilterState);
 
   useEffect(() => {
     (async () => {
@@ -36,7 +56,6 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     AsyncStorage.setItem("profileData", JSON.stringify(profileData));
   }, [profileData]);
-  console.log("Chosen", profileData);
 
   return (
     <DataContext.Provider
@@ -45,6 +64,12 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         setData,
         profileData,
         setProfileData,
+        filteredChosen,
+        setFilteredChosen,
+        filteredRefused,
+        setFilteredRefused,
+        filterState,
+        setFilterState,
       }}
     >
       {children}
