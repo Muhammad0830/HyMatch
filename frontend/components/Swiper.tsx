@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, Text, Easing } from "react-native";
+import React from "react";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
   interpolate,
   runOnJS,
-  withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
 
 type SwiperProps = {
   data: any[];

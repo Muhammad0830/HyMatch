@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import "../globals.css";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import JobCard from "@/components/JobCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
