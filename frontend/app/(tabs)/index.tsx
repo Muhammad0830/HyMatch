@@ -15,12 +15,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Data from "@/data.json";
 import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import Swiper from "react-native-deck-swiper";
 import { useTranslation } from "react-i18next";
+import Swiper from "@/components/Swiper";
 
 export default function Index() {
   const { data, setData } = useData();
-  const [allJobs] = useState<any[]>([...data.jobsData]);
   const { t } = useTranslation();
   const [isExitModelOpen, setIsExitModelOpen] = useState(false);
 
@@ -62,51 +61,27 @@ export default function Index() {
     outputRange: ["0deg", "360deg"],
   });
 
+  const addToChosen = (job: any) => {
+    const jobsData = data.jobsData.filter((Job: any) => Job.id !== job.id);
+    const ChosenData = [...data.ChosenData, job];
+    setData((prev: any) => ({ ...prev, ChosenData, jobsData }));
+  };
+
+  const addToRefused = (job: any) => {
+    const jobsData = data.jobsData.filter((Job: any) => Job.id !== job.id);
+    const RefusedData = [...data.RefusedData, job];
+    setData((prev: any) => ({ ...prev, RefusedData, jobsData }));
+  };
+
   return (
     <View className="flex-1 bg-[#b1b1b1] z-0">
       {data.jobsData.length > 0 ? (
         <View className="w-full h-full z-10 bg-transparent">
           <Swiper
-            cards={allJobs}
-            renderCard={(job, index) => <JobCard Job={job} index={index} />}
-            stackSize={3}
-            stackSeparation={5}
-            stackScale={5}
-            verticalSwipe={false}
-            cardStyle={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              top: 0,
-              left: 0,
-            }}
-            containerStyle={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "transparent",
-            }}
-            onSwiped={(index) => console.log("Swiped:", index)}
-            onSwipedRight={(index) => {
-              const job = allJobs[index];
-              const jobsData = data.jobsData.filter(
-                (Job: any) => Job.id !== job.id
-              );
-              const ChosenData = [...data.ChosenData, job];
-              setData((prev: any) => {
-                return { ...prev, ChosenData, jobsData };
-              });
-            }}
-            onSwipedLeft={(index) => {
-              const job = allJobs[index];
-              const jobsData = data.jobsData.filter(
-                (Job: any) => Job.id !== job.id
-              );
-              const RefusedData = [...data.RefusedData, job];
-              setData((prev: any) => {
-                return { ...prev, RefusedData, jobsData };
-              });
-            }}
-            swipeAnimationDuration={250}
+            data={data.jobsData}
+            onSwipeLeft={(job: any) => addToRefused(job)}
+            onSwipeRight={(job: any) => addToChosen(job)}
+            renderCard={(job: any) => <JobCard Job={job} />}
           />
         </View>
       ) : (
