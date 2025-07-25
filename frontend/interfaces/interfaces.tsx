@@ -36,6 +36,12 @@ export type DataContextType = {
   setData: React.Dispatch<React.SetStateAction<any>>;
   profileData: any;
   setProfileData: React.Dispatch<React.SetStateAction<any>>;
+  filteredChosen: any[];
+  setFilteredChosen: React.Dispatch<React.SetStateAction<any[]>>;
+  filteredRefused: any[];
+  setFilteredRefused: React.Dispatch<React.SetStateAction<any[]>>;
+  filterState: any;
+  setFilterState: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export type CreateSortDataFn = (

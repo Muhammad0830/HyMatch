@@ -118,18 +118,14 @@ const FilterModal = ({
   const applyFilters = () => {
     let updatedTempState = { ...tempState };
 
-    if (
-      selectedFilter.title === t("WorkHoursRange") &&
-      hourlyFrom &&
-      hourlyTo
-    ) {
+    if (selectedFilter.title === "WorkHoursRange" && hourlyFrom && hourlyTo) {
       updatedTempState = {
         ...updatedTempState,
         hourlyRange: {
           from: Number(hourlyFrom),
           to: Number(hourlyTo),
         },
-        salaryUnit: selectedUnit, // ✅ ADD THIS
+        salaryUnit: selectedUnit,
       };
     }
 
