@@ -25,7 +25,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 
-export default function JobCard({ Job, index }: any) {
+export default function JobCard({ Job }: any) {
   const { t } = useTranslation();
 
   const handleInfoPress = () => {
