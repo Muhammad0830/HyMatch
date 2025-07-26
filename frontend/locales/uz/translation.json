@@ -117,5 +117,16 @@
   "hoursWorkFrom": "Soat -- dan ish",
   "hoursWorkTo": "Soat -- gacha ish",
   "starred": "Muhim ish mezonlari",
-  "Got it": "Tushunarli"
+  "Got it": "Tushunarli",
+  "jobTypesMessage": "{{count}} xil ish turlari mavjud.",
+  "Means Job Name": "Ish nomini bildiradi",
+  "Means Job Type": "Ish turini bildiradi",
+  "Means Min Japanese level": "Yapon tili darajasini bildiradi",
+  "Means salary": "Ish haqini bildiradi",
+  "Means commute time from home": "Uydan yo'l vaqtini bildiradi",
+  "Means commute time from school": "Maktabdan yo'l vaqtini bildiradi",
+  "Means working days per week": "Hafta vaqtida ish kunlarini bildiradi",
+  "Means important job criteria": "Muhim ish mezonlarini bildiradi",
+  "Info": "Ma'lumot",
+  "All info about icons": "Ikonkalar haqida barcha ma'lumot"
 }
