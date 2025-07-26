@@ -117,5 +117,16 @@
   "hoursWorkFrom": "勤務開始時間",
   "hoursWorkTo": "勤務終了時間",
   "starred": "仕事で大事なこと",
-  "Got it": "わかった"
+  "Got it": "わかった",
+  "jobTypesMessage": "{{count}}個の仕事タイプがあります。",
+  "Means Job Name": "仕事名の意味をします",
+  "Means Job Type": "仕事タイプの意味をします",
+  "Means Min Japanese level": "日本語レベルの意味をします",
+  "Means salary": "払いの意味をします",
+  "Means commute time from home": "自宅からの通勤時間の意味をします",
+  "Means commute time from school": "学校からの通勤時間の意味をします",
+  "Means working days per week": "週あたりの勤務日数の意味をします",
+  "Means important job criteria": "重要な仕事の条件の意味をします",
+  "Info": "情報",
+  "All info about icons": "アイコンに関するすべての情報"
 }

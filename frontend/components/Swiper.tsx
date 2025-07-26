@@ -103,6 +103,7 @@ export default function Swiper({
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.card, animatedCardStyle]}>
           <Animated.View
+            pointerEvents={"none"}
             style={[likeOpacity]}
             className={
               "left-10 bg-transparent border-[5px] border-green-500 w-36 aspect-square absolute top-16 p-2.5 rounded-full z-10 justify-center items-center"
@@ -111,6 +112,7 @@ export default function Swiper({
             <Text className="text-green-500 font-bold text-2xl">CHOOSE</Text>
           </Animated.View>
           <Animated.View
+            pointerEvents={"none"}
             style={[nopeOpacity]}
             className={
               "right-10 bg-transparent border-[5px] border-red-500 w-36 aspect-square absolute top-16 p-2.5 rounded-full z-10 justify-center items-center"

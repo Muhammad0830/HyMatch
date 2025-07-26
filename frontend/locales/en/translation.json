@@ -117,5 +117,16 @@
   "hoursWorkFrom": "Work From",
   "hoursWorkTo": "Work To",
   "starred": "Important Job Criteria",
-  "Got it": "Got it"
+  "Got it": "Got it",
+  "jobTypesMessage": "There are {{count}} job types.",
+  "Means Job Name": "Means Job Name",
+  "Means Job Type": "Means Job Type",
+  "Means Min Japanese level": "Means Min Japanese level",
+  "Means salary": "Means salary",
+  "Means commute time from home": "Means commute time from home",
+  "Means commute time from school": "Means commute time from school",
+  "Means working days per week": "Means working days per week",
+  "Means important job criteria": "Means important job criteria",
+  "Info": "Info",
+  "All info about icons": "All info about icons"
 }
