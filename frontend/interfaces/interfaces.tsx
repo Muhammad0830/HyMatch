@@ -42,6 +42,8 @@ export type DataContextType = {
   setFilteredRefused: React.Dispatch<React.SetStateAction<any[]>>;
   filterState: any;
   setFilterState: React.Dispatch<React.SetStateAction<any>>;
+  unSwipedJobs: any[];
+  setUnSwipedJobs: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export type CreateSortDataFn = (

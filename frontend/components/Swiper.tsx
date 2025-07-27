@@ -1,13 +1,23 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  withTiming,
   interpolate,
   runOnJS,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useTranslation } from "react-i18next";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -16,6 +26,7 @@ type SwiperProps = {
   onSwipeLeft?: (job: any) => void;
   onSwipeRight?: (job: any) => void;
   renderCard: (job: any) => React.ReactNode;
+  handleReset: () => void;
 };
 
 export default function Swiper({
@@ -23,9 +34,11 @@ export default function Swiper({
   renderCard,
   onSwipeLeft = () => {},
   onSwipeRight = () => {},
+  handleReset = () => {},
 }: SwiperProps) {
   const translateX = useSharedValue(0);
   const rotate = useSharedValue(0);
+  const { t } = useTranslation();
 
   const currentItem = data[0];
 
@@ -85,15 +98,45 @@ export default function Swiper({
     opacity: interpolate(translateX.value, [-SCREEN_WIDTH / 2, 0], [1, 0]),
   }));
 
+  const rotating = useSharedValue(0);
+
+  const spinStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: `${rotating.value}deg`,
+        },
+      ],
+    };
+  });
+
+  const handleRefresh = () => {
+    const duration = 1500;
+
+    rotating.value = withTiming(-1080, { duration }, () => {
+      runOnJS(handleReset)();
+    });
+
+    setTimeout(() => {
+      rotating.value = 0;
+    }, duration + 1000);
+  };
+
   if (data.length <= 0) {
     return (
-      <View
-        style={[
-          StyleSheet.absoluteFill,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <Text style={{ fontSize: 18, color: "gray" }}>No more cards</Text>
+      <View className="items-center h-[83vh] px-4 justify-center">
+        <Text className="text-xl text-center">{t("noJobLeft")}</Text>
+        <Text className="mt-4 mb-2 text-xl text-center">{t("change Filter")}</Text>
+        <Text className="mt-6 text-lg text-center">{t("resetFilter?")}</Text>
+        <TouchableOpacity
+          onPress={() => handleRefresh()}
+          className="mt-2 bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
+        >
+          <Animated.View style={spinStyle}>
+            <FontAwesomeIcon icon={faArrowLeftRotate} size={16} color="white" />
+          </Animated.View>
+          <Text className="text-white font-bold">{t("Reset")}</Text>
+        </TouchableOpacity>
       </View>
     );
   }

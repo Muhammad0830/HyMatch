@@ -31,6 +31,26 @@ import { useData } from "@/contexts/DataContext";
 const MAX_WIDTH = Dimensions.get("window").width * 0.9;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.8;
 
+const dummyData = {
+  JapaneseLevel: ["N5", "N4", "N2", "N3"],
+  imageUri: null,
+  address: "Meguro",
+  addressCode: "1556",
+  age: 21,
+  country: "Uzbekistan",
+  dayWork: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+  emailAddress: "ggg@gmail.com",
+  gender: "Male",
+  homeLocation: "Tokyo",
+  hoursWorkFrom: "4",
+  hoursWorkTo: "6",
+  name: "Muhammad",
+  phoneNumber: "21312",
+  profileImage: null,
+  schoolLocation: "Todai",
+  starred: ["nearStation", "beginnerWelcome", "salaryIncrease", "5/7Workday"],
+};
+
 export default function ProfileForm() {
   const {
     control,
@@ -51,7 +71,7 @@ export default function ProfileForm() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const { profileData, setProfileData } = useData();
+  const { profileData, setProfileData, setFilterState } = useData();
   const [submitted, setSubmitted] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
 
@@ -59,6 +79,15 @@ export default function ProfileForm() {
     const values = getValues();
     values.profileImage = imageUri;
     setProfileData(values);
+    const obj: Record<string, boolean> = {};
+    values.starred.forEach((star: string) => {
+      obj[star] = true;
+    });
+    setFilterState((prev: any) => ({
+      ...prev,
+      japaneseLevel: values.JapaneseLevel,
+      starred: obj,
+    }));
 
     setSubmitted(true);
   };
@@ -128,7 +157,7 @@ export default function ProfileForm() {
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <TextInput
-                className={`border rounded-md p-3 bg-white text-black font-bold ${
+                className={`border rounded-md p-3 bg-white text-black ${
                   errors.name ? "border-red-600" : "border-blue-600/30"
                 }`}
                 value={value}
@@ -240,7 +269,7 @@ export default function ProfileForm() {
                 if (field.type === "text") {
                   return (
                     <TextInput
-                      className={`border rounded-md font-bold text-black p-3 bg-white ${
+                      className={`border rounded-md text-black p-3 bg-white ${
                         errors[field.name]
                           ? "border-red-600"
                           : "border-blue-600/30"
@@ -366,7 +395,7 @@ export default function ProfileForm() {
                             key={index}
                             className={`aspect-square w-[40px] justify-center items-center rounded-full bg-white border ${
                               isSelected
-                                ? "bg-[#DBEAFE] border-blue-500"
+                                ? "bg-blue-200/40 border-blue-500"
                                 : "bg-white border-blue-600/30"
                             }`}
                             onPress={handleToggle}
@@ -486,7 +515,7 @@ export default function ProfileForm() {
 
         <View className="flex-1">
           <TouchableOpacity
-            disabled={!isValid}
+            // disabled={!isValid}
             className={`bg-blue-700 rounded-md px-3 py-2 gap-2 flex-row justify-center items-center`}
             style={{ backgroundColor: isValid ? "#1D4ED8" : "#93C5FD" }}
             onPress={() => {
