@@ -33,6 +33,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [filteredRefused, setFilteredRefused] = useState<any[]>(
     data.RefusedData
   );
+  const [unSwipedJobs, setUnSwipedJobs] = useState<any[]>(data.jobsData);
   const [filterState, setFilterState] =
     useState<FilterState>(defaultFilterState);
 
@@ -70,6 +71,8 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
         setFilteredRefused,
         filterState,
         setFilterState,
+        unSwipedJobs,
+        setUnSwipedJobs,
       }}
     >
       {children}

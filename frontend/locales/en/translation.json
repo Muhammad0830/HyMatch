@@ -128,5 +128,8 @@
   "Means working days per week": "Means working days per week",
   "Means important job criteria": "Means important job criteria",
   "Info": "Info",
-  "All info about icons": "All info about icons"
+  "All info about icons": "All info about icons",
+  "change Filter": "Change filter to see more jobs",
+  "resetFilter?": "Reset filter?",
+  "Reset": "Reset"
 }

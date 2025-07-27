@@ -17,9 +17,10 @@ import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useTranslation } from "react-i18next";
 import Swiper from "@/components/Swiper";
+import { defaultFilterState } from "@/components/SortingAndFiltering";
 
 export default function Index() {
-  const { data, setData } = useData();
+  const { data, setData, unSwipedJobs, setFilterState } = useData();
   const { t } = useTranslation();
   const [isExitModelOpen, setIsExitModelOpen] = useState(false);
 
@@ -73,15 +74,21 @@ export default function Index() {
     setData((prev: any) => ({ ...prev, RefusedData, jobsData }));
   };
 
+  const handleReset = () => {
+    console.log("worked");
+    setFilterState(defaultFilterState);
+  };
+
   return (
     <View className="flex-1 bg-[#b1b1b1] z-0">
       {data.jobsData.length > 0 ? (
         <View className="w-full h-full z-10 bg-transparent">
           <Swiper
-            data={data.jobsData}
+            data={unSwipedJobs}
             onSwipeLeft={(job: any) => addToRefused(job)}
             onSwipeRight={(job: any) => addToChosen(job)}
             renderCard={(job: any) => <JobCard Job={job} />}
+            handleReset={() => handleReset()}
           />
         </View>
       ) : (

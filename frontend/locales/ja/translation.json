@@ -128,5 +128,8 @@
   "Means working days per week": "週あたりの勤務日数の意味をします",
   "Means important job criteria": "重要な仕事の条件の意味をします",
   "Info": "情報",
-  "All info about icons": "アイコンに関するすべての情報"
+  "All info about icons": "アイコンに関するすべての情報",
+  "change Filter": "より多くの仕事を見るにはフィルターを変更してください",
+  "resetFilter?": "フィルターをリセットしますか？",
+  "Reset": "リセット"
 }

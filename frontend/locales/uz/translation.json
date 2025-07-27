@@ -128,5 +128,8 @@
   "Means working days per week": "Hafta vaqtida ish kunlarini bildiradi",
   "Means important job criteria": "Muhim ish mezonlarini bildiradi",
   "Info": "Ma'lumot",
-  "All info about icons": "Ikonkalar haqida barcha ma'lumot"
+  "All info about icons": "Ikonkalar haqida barcha ma'lumot",
+  "change Filter": "ko'proq ishni ko'rish uchun filterni o'zgartiring",
+  "resetFilter?": "Filterni eski holatiga qaytarmoqchimisiz?",
+  "Reset": "Qaytarish"
 }

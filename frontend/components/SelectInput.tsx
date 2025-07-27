@@ -38,7 +38,7 @@ export const SelectInput = ({
         onPress={() => setModalVisible(true)}
       >
         {value ? (
-          <Text className="text-base text-black font-bold">
+          <Text className="text-base text-black">
             {value.toString()}
           </Text>
         ) : (

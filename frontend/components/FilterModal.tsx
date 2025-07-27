@@ -17,6 +17,7 @@ const units = ["hourly", "daily", "weekly", "monthly", "yearly"];
 const FilterModal = ({
   modalOpen,
   setModalOpen,
+  filterState,
   selectedFilter,
   setFilterState,
   defaultFilterState,
@@ -88,6 +89,10 @@ const FilterModal = ({
     });
   }, [selectedUnit, animations]);
 
+  useEffect(() => {
+    setTempState(filterState);
+  }, [filterState]);
+
   const toggleItem = (key: string, value: string) => {
     setTempState((prev) => {
       const updated = prev[key as keyof FilterState] || [];
@@ -139,11 +144,11 @@ const FilterModal = ({
     setModalOpen(false);
   };
 
-  const clearFilter = () => {
-    setTempState(defaultFilterState);
+  const clearFilter = (filterKey: any) => {
+    setTempState((prev: any) => ({ ...prev, ...filterKey }));
     setHourlyFrom("");
     setHourlyTo("");
-    setFilterState(defaultFilterState);
+    setFilterState((prev: any) => ({ ...prev, ...filterKey }));
     setModalOpen(false);
   };
 
@@ -338,7 +343,33 @@ const FilterModal = ({
           <View className="flex-row justify-between gap-2 mt-2">
             <TouchableOpacity
               onPress={() => {
-                clearFilter();
+                const filterKey = selectedFilter.title.toLowerCase();
+                let updatedFilterKey;
+                if (filterKey === "starred") {
+                  updatedFilterKey = {
+                    starred: {
+                      nearStation: false,
+                      beginnerWelcome: false,
+                      salaryIncrease: false,
+                      timeFlexiblity: false,
+                      "5/7Workday": false,
+                    },
+                  };
+                } else if (filterKey === "japaneselevel") {
+                  updatedFilterKey = {
+                    japaneseLevel: [],
+                  };
+                } else if (filterKey === "hourlyrange") {
+                  updatedFilterKey = {
+                    hourlyRange: null,
+                  };
+                } else if (filterKey === "jobtype") {
+                  updatedFilterKey = {
+                    jobType: [],
+                  };
+                }
+
+                clearFilter(updatedFilterKey);
                 setFocusedInput(null);
               }}
               className="bg-gray-300 rounded px-4 py-2 flex-1"

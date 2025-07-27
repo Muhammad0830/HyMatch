@@ -14,7 +14,6 @@ import {
   FilterDataProps,
 } from "@/interfaces/interfaces";
 import { SortState, FilterState } from "@/types/types";
-import Data from "@/data.json";
 import getFilteredAndSortedJobs from "@/lib/getFilteredAndSortedJobs";
 import {
   createSortData,
@@ -32,7 +31,7 @@ const defaultSortState: SortState = {
   byDate: null,
 };
 
-const defaultFilterState: FilterState = {
+export const defaultFilterState: FilterState = {
   jobType: [],
   japaneseLevel: [],
   hourlyRange: null,
@@ -54,13 +53,13 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
     null
   );
   const [sortState, setSortState] = useState<SortState>(defaultSortState);
-  const [draftData] = useState<any[]>([...Data.jobsData]);
   const {
     data,
     setFilteredChosen,
     setFilteredRefused,
     filterState,
     setFilterState,
+    setUnSwipedJobs,
   } = useData();
 
   const activeSort = useMemo(() => {
@@ -90,11 +89,11 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   };
 
   const filteredSortedJobs = useMemo(() => {
-    return getFilteredAndSortedJobs(draftData, filterState, sortState);
-  }, [draftData, filterState, sortState]);
+    return getFilteredAndSortedJobs(data.jobsData, filterState, sortState);
+  }, [data.jobsData, filterState, sortState]);
   console.log(
     "filteredSortedJobs",
-    filteredSortedJobs.map((job) => job.name)
+    filteredSortedJobs.map((job: any) => job.name)
   );
 
   const filteredChosenJobs = useMemo(() => {
@@ -108,11 +107,14 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   useEffect(() => {
     setFilteredChosen(filteredChosenJobs);
     setFilteredRefused(filteredRefusedJobs);
+    setUnSwipedJobs(filteredSortedJobs);
   }, [
     filteredChosenJobs,
     filteredRefusedJobs,
+    filteredSortedJobs,
     setFilteredChosen,
     setFilteredRefused,
+    setUnSwipedJobs,
   ]);
 
   const sortData = createSortData(t, setSortState);
@@ -266,6 +268,7 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
         setModalOpen={setModalFilterOpen}
         selectedFilter={selectedFilter}
         setFilterState={setFilterState}
+        filterState={filterState}
         defaultFilterState={defaultFilterState}
       />
     </View>
