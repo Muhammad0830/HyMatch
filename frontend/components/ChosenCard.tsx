@@ -17,8 +17,8 @@ export default function ChosenCard({ job, index }: any) {
   const typeIconMap: Record<string, any> = {
     utensils: faUtensils,
     bellConcierge: faBellConcierge,
-    user: faBroom,
-    phone: faIndustry,
+    broom: faBroom,
+    industry: faIndustry,
     truck: faTruck,
     hotel: faHotel,
   };
