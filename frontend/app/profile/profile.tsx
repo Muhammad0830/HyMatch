@@ -27,29 +27,10 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import { useData } from "@/contexts/DataContext";
+import { generatePdf } from "@/lib/downloadPDFprofile";
 
 const MAX_WIDTH = Dimensions.get("window").width * 0.9;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.8;
-
-const dummyData = {
-  JapaneseLevel: ["N5", "N4", "N2", "N3"],
-  imageUri: null,
-  address: "Meguro",
-  addressCode: "1556",
-  age: 21,
-  country: "Uzbekistan",
-  dayWork: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-  emailAddress: "ggg@gmail.com",
-  gender: "Male",
-  homeLocation: "Tokyo",
-  hoursWorkFrom: "4",
-  hoursWorkTo: "6",
-  name: "Muhammad",
-  phoneNumber: "21312",
-  profileImage: null,
-  schoolLocation: "Todai",
-  starred: ["nearStation", "beginnerWelcome", "salaryIncrease", "5/7Workday"],
-};
 
 export default function ProfileForm() {
   const {
@@ -91,6 +72,11 @@ export default function ProfileForm() {
 
     setSubmitted(true);
   };
+
+  const newValues = getValues();
+  useEffect(() => {
+    console.log("newValues", newValues);
+  }, [newValues]);
 
   useEffect(() => {
     reset(profileData);
@@ -183,7 +169,9 @@ export default function ProfileForm() {
                       onPress={() => openImageModal(imageUri)}
                     >
                       <Image
-                        source={{ uri: imageUri }}
+                        source={{
+                          uri: imageUri,
+                        }}
                         className="w-full h-full rounded-md object-contain"
                       />
                     </TouchableOpacity>
@@ -515,10 +503,11 @@ export default function ProfileForm() {
 
         <View className="flex-1">
           <TouchableOpacity
-            // disabled={!isValid}
+            disabled={!isValid || !submitted}
             className={`bg-blue-700 rounded-md px-3 py-2 gap-2 flex-row justify-center items-center`}
             style={{ backgroundColor: isValid ? "#1D4ED8" : "#93C5FD" }}
             onPress={() => {
+              generatePdf({ ...profileData, imageUri });
               setDownloaded(true);
             }}
           >
