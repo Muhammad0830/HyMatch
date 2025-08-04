@@ -131,5 +131,6 @@
   "All info about icons": "Ikonkalar haqida barcha ma'lumot",
   "change Filter": "ko'proq ishni ko'rish uchun filterni o'zgartiring",
   "resetFilter?": "Filterni eski holatiga qaytarmoqchimisiz?",
-  "Reset": "Qaytarish"
+  "Reset": "Qaytarish",
+  "starMessage": "{{count}}ta muhim ish mezonlari mavjud"
 }
