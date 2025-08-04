@@ -8,7 +8,10 @@ import {
   faShoePrints,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
-import { createIconsInfo } from "@/constants/infoIconsData";
+import {
+  createIconsInfo,
+  createStarIconConfig,
+} from "@/constants/infoIconsData";
 
 const FontAwesomeIconWithInfo = ({
   icon,
@@ -31,6 +34,7 @@ const FontAwesomeIconWithInfo = ({
   const jobTypes = ["調理", "接客", "清掃", "工場", "宅配", "ホテル"];
 
   const icons = createIconsInfo(t);
+  const starIconConfig = createStarIconConfig(t);
 
   return (
     <TouchableOpacity
@@ -96,7 +100,7 @@ const FontAwesomeIconWithInfo = ({
                             <Text className="text-md mb-2">
                               {t("jobTypesMessage", { count: jobTypes.length })}
                             </Text>
-                            <View className="">
+                            <View>
                               {jobTypes.map((type, index) => (
                                 <View
                                   key={index}
@@ -105,6 +109,31 @@ const FontAwesomeIconWithInfo = ({
                                   <Text>
                                     {index + 1}. {t(type)}
                                   </Text>
+                                </View>
+                              ))}
+                            </View>
+                          </View>
+                        ) : iconItem.name === "star" ? (
+                          <View className="mt-2">
+                            <Text className="text-md mb-2">
+                              {t("starMessage", {
+                                count: starIconConfig.length,
+                              })}
+                            </Text>
+                            <View>
+                              {starIconConfig.map((config, index) => (
+                                <View
+                                  key={index}
+                                  className={`flex-row items-center my-1 gap-2`}
+                                >
+                                  <View className="bg-[#c29c70] p-1.5 rounded-full justify-center items-center aspect-square">
+                                    <FontAwesomeIcon
+                                      icon={config.icon}
+                                      size={20}
+                                      color="white"
+                                    />
+                                  </View>
+                                  <Text>{t(config.text)}</Text>
                                 </View>
                               ))}
                             </View>

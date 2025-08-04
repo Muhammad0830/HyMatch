@@ -131,5 +131,6 @@
   "All info about icons": "All info about icons",
   "change Filter": "Change filter to see more jobs",
   "resetFilter?": "Reset filter?",
-  "Reset": "Reset"
+  "Reset": "Reset", 
+  "starMessage": "There are {{count}} important job criteria"
 }

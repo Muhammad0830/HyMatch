@@ -11,7 +11,6 @@ import {
   faCalendarAlt,
   faClock,
   faStar,
-  faSeedling,
   faInfo,
   faBuilding,
   faBellConcierge,
@@ -19,16 +18,17 @@ import {
   faIndustry,
   faTruck,
   faHotel,
-  faTrainSubway,
-  faArrowUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import FontAwesomeIconWithInfo from "@/components/FontAwesomeIconWithInfo";
 import BigInfoModal from "./BigInfoModal";
+import { createStarIconConfig } from "@/constants/infoIconsData";
 
 export default function JobCard({ Job }: any) {
   const { t } = useTranslation();
   const [bigInfoModalOpen, setBigInfoModalOpen] = useState(false);
+
+  const starIconConfig = createStarIconConfig(t);
 
   const typeIconMap: Record<string, any> = {
     utensils: faUtensils,
@@ -38,29 +38,6 @@ export default function JobCard({ Job }: any) {
     truck: faTruck,
     hotel: faHotel,
   };
-
-  const starIconConfig = [
-    {
-      key: "nearStation",
-      icon: faTrainSubway,
-    },
-    {
-      key: "beginnerWelcome",
-      icon: faSeedling,
-    },
-    {
-      key: "salaryIncrease",
-      icon: faArrowUp,
-    },
-    {
-      key: "timeFlexiblity",
-      icon: faClock,
-    },
-    {
-      key: "5/7Workday",
-      icon: faCalendarAlt,
-    },
-  ];
 
   const minLevel = Job.japaneseLevel;
 

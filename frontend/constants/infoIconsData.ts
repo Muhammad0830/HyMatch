@@ -1,4 +1,18 @@
-import { faBuilding, faCalendarAlt, faCoins, faFileContract, faGlobe, faHouse, faStar, faTrain } from "@fortawesome/free-solid-svg-icons";
+import { text } from "@fortawesome/fontawesome-svg-core";
+import {
+  faArrowUp,
+  faBuilding,
+  faCalendarAlt,
+  faClock,
+  faCoins,
+  faFileContract,
+  faGlobe,
+  faHouse,
+  faSeedling,
+  faStar,
+  faTrain,
+  faTrainSubway,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const createIconsInfo = (t: (key: string) => string) => [
   {
@@ -40,5 +54,33 @@ export const createIconsInfo = (t: (key: string) => string) => [
     name: "star",
     icon: faStar,
     text: t("Means important job criteria"),
+  },
+];
+
+export const createStarIconConfig = (t: (key: string) => string) => [
+  {
+    key: "nearStation",
+    icon: faTrainSubway,
+    text: t("Means there is station nearby"),
+  },
+  {
+    key: "beginnerWelcome",
+    icon: faSeedling,
+    text: t("Means beginner welcome"),
+  },
+  {
+    key: "salaryIncrease",
+    icon: faArrowUp,
+    text: t("Means salary increases"),
+  },
+  {
+    key: "timeFlexiblity",
+    icon: faClock,
+    text: t("Means time flexibility"),
+  },
+  {
+    key: "5/7Workday",
+    icon: faCalendarAlt,
+    text: t("Means 5 wordays per week"),
   },
 ];

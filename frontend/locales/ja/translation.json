@@ -131,5 +131,6 @@
   "All info about icons": "アイコンに関するすべての情報",
   "change Filter": "より多くの仕事を見るにはフィルターを変更してください",
   "resetFilter?": "フィルターをリセットしますか？",
-  "Reset": "リセット"
+  "Reset": "リセット",
+  "starMessage": "{{count}}個の重要な仕事の条件があります"
 }
