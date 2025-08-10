@@ -19,7 +19,6 @@ import { SelectInput } from "@/components/SelectInput";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useTranslation } from "react-i18next";
 import {
-  faC,
   faCheck,
   faClose,
   faQuestion,
@@ -409,8 +408,6 @@ export default function ProfileForm() {
                         </View>
                       );
                     }
-
-                    console.log("value", value);
 
                     if (field.type === "col-checkbox") {
                       return (

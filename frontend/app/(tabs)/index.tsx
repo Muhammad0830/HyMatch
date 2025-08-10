@@ -75,7 +75,6 @@ export default function Index() {
   };
 
   const handleReset = () => {
-    console.log("worked");
     setFilterState(defaultFilterState);
   };
 
