@@ -132,5 +132,7 @@
   "change Filter": "Change filter to see more jobs",
   "resetFilter?": "Reset filter?",
   "Reset": "Reset", 
-  "starMessage": "There are {{count}} important job criteria"
+  "starMessage": "There are {{count}} important job criteria",
+  "Close": "Close",
+  "Selected": "Selected"
 }

@@ -132,5 +132,7 @@
   "change Filter": "ko'proq ishni ko'rish uchun filterni o'zgartiring",
   "resetFilter?": "Filterni eski holatiga qaytarmoqchimisiz?",
   "Reset": "Qaytarish",
-  "starMessage": "{{count}}ta muhim ish mezonlari mavjud"
+  "starMessage": "{{count}}ta muhim ish mezonlari mavjud",
+  "Close": "Yopish",
+  "Selected": "Tanlangan"
 }

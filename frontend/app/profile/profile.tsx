@@ -19,12 +19,14 @@ import { SelectInput } from "@/components/SelectInput";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useTranslation } from "react-i18next";
 import {
+  faC,
   faCheck,
   faClose,
   faQuestion,
   faRotate,
   faSave,
   faUpload,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useData } from "@/contexts/DataContext";
 import { generatePdf } from "@/lib/downloadPDFprofile";
@@ -55,6 +57,7 @@ export default function ProfileForm() {
   const { profileData, setProfileData, setFilterState } = useData();
   const [submitted, setSubmitted] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [showImportantJobsModal, setShowImportantJobsModal] = useState(false);
 
   const onSubmit = () => {
     const values = getValues();
@@ -72,11 +75,6 @@ export default function ProfileForm() {
 
     setSubmitted(true);
   };
-
-  const newValues = getValues();
-  useEffect(() => {
-    console.log("newValues", newValues);
-  }, [newValues]);
 
   useEffect(() => {
     reset(profileData);
@@ -137,22 +135,27 @@ export default function ProfileForm() {
       <View className="flex-row gap-4 mb-4">
         <View className="flex-1">
           <Text className="mb-1 font-semibold">{t("Name")}</Text>
-          <Controller
-            control={control}
-            name="name"
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                className={`border rounded-md p-3 bg-white text-black ${
-                  errors.name ? "border-red-600" : "border-blue-600/30"
-                }`}
-                value={value}
-                onChangeText={onChange}
-                placeholder={t("name")}
-                placeholderTextColor="#4B5563"
-              />
-            )}
-          />
+          <View className="flex-row items-center gap-2">
+            <View className="justify-center items-center p-2.5 border border-blue-700 rounded-full">
+              <FontAwesomeIcon icon={faUser} size={20} color="blue" />
+            </View>
+            <Controller
+              control={control}
+              name="name"
+              rules={{ required: true }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  className={`border flex-1 rounded-md p-3 bg-white text-black ${
+                    errors.name ? "border-red-600" : "border-blue-600/30"
+                  }`}
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder={t("name")}
+                  placeholderTextColor="#4B5563"
+                />
+              )}
+            />
+          </View>
         </View>
 
         <View className="">
@@ -249,217 +252,279 @@ export default function ProfileForm() {
               {t(`${field.label}`)}
             </Text>
 
-            <Controller
-              control={control}
-              name={field.name}
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => {
-                if (field.type === "text") {
-                  return (
-                    <TextInput
-                      className={`border rounded-md text-black p-3 bg-white ${
-                        errors[field.name]
-                          ? "border-red-600"
-                          : "border-blue-600/30"
-                      }`}
-                      value={value}
-                      onChangeText={onChange}
-                      keyboardType={field.keyboardType ?? "default"}
-                      placeholder={t(`${field.label}`)}
-                      placeholderTextColor={"#4B5563"}
-                    />
-                  );
-                }
-
-                if (field.type === "file") {
-                  return (
-                    <>
-                      {imageUri && (
-                        <Image
-                          source={{ uri: imageUri }}
-                          style={{
-                            width: 200,
-                            height: 200,
-                            borderRadius: 10,
-                          }}
+            <View className="flex-row items-center gap-2">
+              {field.icon ? (
+                <View className="justify-center items-center p-2.5 border border-blue-700 rounded-full">
+                  <FontAwesomeIcon icon={field.icon} size={20} color="blue" />
+                </View>
+              ) : (
+                ""
+              )}
+              <View className="flex-1">
+                <Controller
+                  control={control}
+                  name={field.name}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value } }) => {
+                    if (field.type === "text") {
+                      return (
+                        <TextInput
+                          className={`border rounded-md text-black p-3 bg-white ${
+                            errors[field.name]
+                              ? "border-red-600"
+                              : "border-blue-600/30"
+                          }`}
+                          value={value}
+                          onChangeText={onChange}
+                          keyboardType={field.keyboardType ?? "default"}
+                          placeholder={t(`${field.label}`)}
+                          placeholderTextColor={"#4B5563"}
                         />
-                      )}
-                      <TouchableOpacity
-                        onPress={pickImage}
-                        className="bg-blue-500 p-2 rounded-md"
-                      >
-                        <Text>{field.label}</Text>
-                      </TouchableOpacity>
-                    </>
-                  );
-                }
+                      );
+                    }
 
-                if (field.type === "select" && field.options) {
-                  return (
-                    <SelectInput
-                      buttonClassName={`border rounded-md p-3 bg-white ${
-                        errors[field.name]
-                          ? "border-red-600"
-                          : "border-blue-600/30"
-                      }`}
-                      label={field.label}
-                      value={value}
-                      options={field.options}
-                      onChange={onChange}
-                    />
-                  );
-                }
+                    if (field.type === "file") {
+                      return (
+                        <>
+                          {imageUri && (
+                            <Image
+                              source={{ uri: imageUri }}
+                              style={{
+                                width: 200,
+                                height: 200,
+                                borderRadius: 10,
+                              }}
+                            />
+                          )}
+                          <TouchableOpacity
+                            onPress={pickImage}
+                            className="bg-blue-500 p-2 rounded-md"
+                          >
+                            <Text>{field.label}</Text>
+                          </TouchableOpacity>
+                        </>
+                      );
+                    }
 
-                if (field.type === "radio") {
-                  const radioOptions = field.options as {
-                    label: string;
-                    icon: any;
-                  }[];
+                    if (field.type === "select" && field.options) {
+                      return (
+                        <SelectInput
+                          buttonClassName={`border rounded-md p-3 bg-white ${
+                            errors[field.name]
+                              ? "border-red-600"
+                              : "border-blue-600/30"
+                          }`}
+                          label={field.label}
+                          value={value}
+                          options={field.options}
+                          onChange={onChange}
+                        />
+                      );
+                    }
 
-                  return (
-                    <View className="flex-row">
-                      <View
-                        className={`flex-row items-center gap-2 p-1 border rounded-md ${
-                          errors[field.name]
-                            ? "border-red-600"
-                            : "border-transparent"
-                        }`}
-                      >
-                        {radioOptions?.map((option, index) => {
-                          const isSelected = value === option.label;
+                    if (field.type === "radio") {
+                      const radioOptions = field.options as {
+                        label: string;
+                        icon: any;
+                      }[];
 
-                          return (
-                            <TouchableOpacity
-                              key={index}
-                              className={`flex-row items-center gap-2 px-3 py-2 rounded-md border ${
-                                isSelected
-                                  ? "bg-blue-100 border-blue-500"
-                                  : "bg-white border-blue-600/30"
+                      return (
+                        <View
+                          className={`flex-row items-center gap-2 justify-between border rounded-md ${
+                            errors[field.name]
+                              ? "border-red-600"
+                              : "border-transparent"
+                          }`}
+                        >
+                          {radioOptions?.map((option, index) => {
+                            const isSelected = value === option.label;
+
+                            return (
+                              <TouchableOpacity
+                                key={index}
+                                className={`flex-row items-center gap-2 px-3 py-2 rounded-md border ${
+                                  isSelected
+                                    ? "bg-blue-100 border-blue-500"
+                                    : "bg-white border-blue-600/30"
+                                }`}
+                                onPress={() => onChange(option.label)}
+                              >
+                                <View>
+                                  <FontAwesomeIcon
+                                    icon={option.icon}
+                                    size={20}
+                                    color="blue"
+                                  />
+                                </View>
+                                <Text className="text-black font-bold">
+                                  {t(`${option.label}`)}
+                                </Text>
+                              </TouchableOpacity>
+                            );
+                          })}
+                        </View>
+                      );
+                    }
+
+                    if (field.type === "checkbox") {
+                      return (
+                        <View
+                          className={`flex-row flex-1 items-center gap-1 p-1 border ${
+                            errors[field.name]
+                              ? "border-red-600 rounded-md"
+                              : "border-blue-200 border-y-0 border-x-[1px]"
+                          } ${
+                            field.name === "JapaneseLevel"
+                              ? "justify-evenly"
+                              : "justify-between"
+                          }`}
+                        >
+                          {field.options?.map((option, index) => {
+                            const isSelected = value?.includes(
+                              option as string
+                            );
+                            const handleToggle = () => {
+                              const updated = isSelected
+                                ? value?.filter((v: string) => v !== option)
+                                : [...(value || []), option];
+                              onChange(updated);
+                            };
+
+                            return (
+                              <TouchableOpacity
+                                key={index}
+                                className={`aspect-square w-[35px] justify-center items-center rounded-full bg-white border ${
+                                  isSelected
+                                    ? "bg-[#dbeafe] border-blue-500"
+                                    : "bg-white border-blue-600/30"
+                                }`}
+                                onPress={handleToggle}
+                              >
+                                <Text className="text-sm font-bold text-black">
+                                  {t(`${option}`)}
+                                </Text>
+                              </TouchableOpacity>
+                            );
+                          })}
+                        </View>
+                      );
+                    }
+
+                    console.log("value", value);
+
+                    if (field.type === "col-checkbox") {
+                      return (
+                        <View>
+                          <TouchableOpacity
+                            className={`px-4 py-3 flex-row items-center justify-between gap-2 p-1 border rounded-md ${
+                              errors["starred"]
+                                ? "border-red-600"
+                                : "border-blue-200"
+                            }`}
+                            onPress={() => setShowImportantJobsModal(true)}
+                          >
+                            <Text>
+                              {value?.length > 0
+                                ? t("Selected")
+                                : t("Select...")}
+                            </Text>
+                            <View
+                              className={`p-1 rounded-full bg-green-500 justify-center items-center ${
+                                value?.length > 0 ? "flex" : "hidden"
                               }`}
-                              onPress={() => onChange(option.label)}
                             >
-                              <View>
-                                <FontAwesomeIcon
-                                  icon={option.icon}
-                                  size={20}
-                                  color="blue"
-                                />
-                              </View>
-                              <Text className="text-black font-bold">
-                                {t(`${option.label}`)}
-                              </Text>
-                            </TouchableOpacity>
-                          );
-                        })}
-                      </View>
-                    </View>
-                  );
-                }
-
-                if (field.type === "checkbox") {
-                  return (
-                    <View
-                      className={`flex-row items-center gap-2 p-1 border rounded-md ${
-                        errors[field.name]
-                          ? "border-red-600"
-                          : "border-transparent"
-                      } ${
-                        field.name === "japaneseLevel"
-                          ? "justify-between"
-                          : "justify-evenly"
-                      }`}
-                    >
-                      {field.options?.map((option, index) => {
-                        const isSelected = value?.includes(option as string);
-                        const handleToggle = () => {
-                          const updated = isSelected
-                            ? value?.filter((v: string) => v !== option)
-                            : [...(value || []), option];
-                          onChange(updated);
-                        };
-
-                        return (
-                          <TouchableOpacity
-                            key={index}
-                            className={`aspect-square w-[40px] justify-center items-center rounded-full bg-white border ${
-                              isSelected
-                                ? "bg-blue-200/40 border-blue-500"
-                                : "bg-white border-blue-600/30"
-                            }`}
-                            onPress={handleToggle}
-                          >
-                            <Text className="text-sm font-bold text-black">
-                              {t(`${option}`)}
-                            </Text>
+                              <FontAwesomeIcon
+                                icon={faCheck}
+                                size={16}
+                                color="white"
+                              />
+                            </View>
                           </TouchableOpacity>
-                        );
-                      })}
-                    </View>
-                  );
-                }
 
-                if (field.type === "col-checkbox") {
-                  return (
-                    <View
-                      className={`items-center gap-2 p-1 border rounded-md ${
-                        errors[field.name]
-                          ? "border-red-600"
-                          : "border-transparent"
-                      } ${
-                        field.name === "japaneseLevel"
-                          ? "justify-between"
-                          : "justify-evenly"
-                      }`}
-                    >
-                      {field.options?.map((option, index) => {
-                        const isSelected = value?.includes(option as string);
-                        const handleToggle = () => {
-                          const updated = isSelected
-                            ? value?.filter((v: string) => v !== option)
-                            : [...(value || []), option];
-                          onChange(updated);
-                        };
+                          {/* important jobs criteria modal */}
+                          <View>
+                            <Modal visible={showImportantJobsModal} transparent>
+                              <View className="absolute top-0 bottom-0 left-0 right-0 rounded-md w-full justify-center items-center">
+                                <Pressable
+                                  className="flex-1 w-full justify-center items-center bg-black/40 px-4"
+                                  onPress={() =>
+                                    setShowImportantJobsModal(false)
+                                  }
+                                ></Pressable>
 
-                        return (
-                          <TouchableOpacity
-                            key={index}
-                            className={`w-full px-3 py-2 flex-row justify-between items-center rounded-md bg-white border ${
-                              isSelected
-                                ? "bg-[#DBEAFE] border-blue-500"
-                                : "bg-white border-blue-600/30"
-                            }`}
-                            onPress={handleToggle}
-                          >
-                            <Text className="text-sm text-black font-bold">
-                              {t(`${option}`)}
-                            </Text>
-                            {isSelected ? (
-                              <View className="bg-green-500 border border-green-500 rounded-full p-1">
-                                <FontAwesomeIcon
-                                  icon={faCheck}
-                                  size={10}
-                                  color="white"
-                                />
+                                <View
+                                  style={{ width: 300 }}
+                                  className={`absolute bg-white items-center gap-2 p-3 border rounded-md`}
+                                >
+                                  {field.options?.map((option, index) => {
+                                    const isSelected = value?.includes(
+                                      option as string
+                                    );
+                                    const handleToggle = () => {
+                                      const updated = isSelected
+                                        ? value?.filter(
+                                            (v: string) => v !== option
+                                          )
+                                        : [...(value || []), option];
+                                      onChange(updated);
+                                    };
+
+                                    return (
+                                      <TouchableOpacity
+                                        key={index}
+                                        className={`w-full px-3 py-2 flex-row justify-between items-center rounded-md bg-white border ${
+                                          isSelected
+                                            ? "bg-[#DBEAFE] border-blue-500"
+                                            : "bg-white border-blue-600/30"
+                                        }`}
+                                        onPress={handleToggle}
+                                      >
+                                        <Text className="text-sm text-black font-bold">
+                                          {t(`${option}`)}
+                                        </Text>
+                                        {isSelected ? (
+                                          <View className="bg-green-500 border border-green-500 rounded-full p-1">
+                                            <FontAwesomeIcon
+                                              icon={faCheck}
+                                              size={10}
+                                              color="white"
+                                            />
+                                          </View>
+                                        ) : (
+                                          <View className="bg-white border rounded-full p-1">
+                                            <FontAwesomeIcon
+                                              icon={faCheck}
+                                              size={10}
+                                              color="white"
+                                            />
+                                          </View>
+                                        )}
+                                      </TouchableOpacity>
+                                    );
+                                  })}
+                                  <TouchableOpacity
+                                    className="flex-1 w-full justify-center items-center bg-blue-500 px-4 py-3 rounded-md"
+                                    onPress={() =>
+                                      setShowImportantJobsModal(false)
+                                    }
+                                  >
+                                    <Text className="text-white font-bold">
+                                      {t("Close")}
+                                    </Text>
+                                  </TouchableOpacity>
+                                </View>
                               </View>
-                            ) : (
-                              <View className="bg-white border rounded-full p-1">
-                                <FontAwesomeIcon
-                                  icon={faCheck}
-                                  size={10}
-                                  color="white"
-                                />
-                              </View>
-                            )}
-                          </TouchableOpacity>
-                        );
-                      })}
-                    </View>
-                  );
-                }
+                            </Modal>
+                          </View>
+                        </View>
+                      );
+                    }
 
-                return <></>;
-              }}
-            />
+                    return <></>;
+                  }}
+                />
+              </View>
+            </View>
           </View>
         ))}
 
@@ -490,8 +555,8 @@ export default function ProfileForm() {
             <View className="absolute right-0 top-0 bottom-0 left-0 justify-end flex-row items-center gap-1">
               <TouchableOpacity
                 onPress={() => {
-                  setShowErrorModal(true);
                   trigger();
+                  setShowErrorModal(true);
                 }}
                 className="ml-1 bg-red-600 rounded-full p-1 mr-4"
               >
@@ -529,8 +594,8 @@ export default function ProfileForm() {
             <View className="absolute right-0 top-0 bottom-0 left-0 justify-end flex-row items-center gap-1">
               <TouchableOpacity
                 onPress={() => {
-                  setShowErrorModal(true);
                   trigger();
+                  setShowErrorModal(true);
                 }}
                 className="ml-1 bg-red-600 rounded-full p-1 mr-4"
               >
@@ -541,6 +606,7 @@ export default function ProfileForm() {
         </View>
       </View>
 
+      {/* empty fields modal */}
       <View>
         <Modal
           transparent

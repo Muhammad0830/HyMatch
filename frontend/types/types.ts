@@ -33,12 +33,14 @@ export type FieldDefinition =
       type: "text" | "select" | "radio" | "file" | "checkbox" | "col-checkbox";
       options?: string[] | number[];
       keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
+      icon?: any;
     }
   | {
       name: string;
       label: string;
       type: "radio";
       options: { label: string; icon: any }[];
+      icon?: any;
     };
 
 export type FormValues = {
