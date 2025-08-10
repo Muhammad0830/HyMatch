@@ -132,5 +132,7 @@
   "change Filter": "より多くの仕事を見るにはフィルターを変更してください",
   "resetFilter?": "フィルターをリセットしますか？",
   "Reset": "リセット",
-  "starMessage": "{{count}}個の重要な仕事の条件があります"
+  "starMessage": "{{count}}個の重要な仕事の条件があります",
+  "Close": "閉じる",
+  "Selected": "選択済み"
 }
