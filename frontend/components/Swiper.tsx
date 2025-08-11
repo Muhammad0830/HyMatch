@@ -41,6 +41,7 @@ export default function Swiper({
   const { t } = useTranslation();
 
   const currentItem = data[0];
+  const nextItem = data[1];
 
   const handleSwipe = (direction: "left" | "right") => {
     try {
@@ -126,7 +127,9 @@ export default function Swiper({
     return (
       <View className="items-center h-[83vh] px-4 justify-center">
         <Text className="text-xl text-center">{t("noJobLeft")}</Text>
-        <Text className="mt-4 mb-2 text-xl text-center">{t("change Filter")}</Text>
+        <Text className="mt-4 mb-2 text-xl text-center">
+          {t("change Filter")}
+        </Text>
         <Text className="mt-6 text-lg text-center">{t("resetFilter?")}</Text>
         <TouchableOpacity
           onPress={() => handleRefresh()}
@@ -143,6 +146,31 @@ export default function Swiper({
 
   return (
     <View style={StyleSheet.absoluteFill}>
+      {nextItem ? (
+        <View>{renderCard(nextItem)}</View>
+      ) : (
+        <View className="items-center h-[83vh] px-4 justify-center">
+          <Text className="text-xl text-center">{t("noJobLeft")}</Text>
+          <Text className="mt-4 mb-2 text-xl text-center">
+            {t("change Filter")}
+          </Text>
+          <Text className="mt-6 text-lg text-center">{t("resetFilter?")}</Text>
+          <TouchableOpacity
+            onPress={() => handleRefresh()}
+            className="mt-2 bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
+          >
+            <Animated.View style={spinStyle}>
+              <FontAwesomeIcon
+                icon={faArrowLeftRotate}
+                size={16}
+                color="white"
+              />
+            </Animated.View>
+            <Text className="text-white font-bold">{t("Reset")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <GestureDetector gesture={panGesture}>
         <Animated.View style={[styles.card, animatedCardStyle]}>
           <Animated.View
