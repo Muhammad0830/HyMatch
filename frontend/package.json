@@ -74,5 +74,23 @@
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+        "react-native-fs",
+        "react-native-html-to-pdf",
+        "@fortawesome/free-regular-svg-icons",
+        "@fortawesome/free-solid-svg-icons",
+        "ajv",
+        "ajv-keywords",
+        "i18next-browser-languagedetector",
+        "i18next-http-backend",
+        "react-native-locale-detector",
+        "react-native-vector-icons"
+        ]
+      }
+    }
+  }
 }
