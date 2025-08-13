@@ -13,6 +13,16 @@
     },
     "production": {
       "autoIncrement": true
+    },
+    "distribution": "internal",
+    "node": {
+      "yarn": false
+    },
+    "env": {
+      "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
+    },
+    "hooks": {
+      "preinstall": "npm install --legacy-peer-deps"
     }
   },
   "submit": {
