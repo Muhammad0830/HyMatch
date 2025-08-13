@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-locale-detector/android/build.gradle b/node_modules/react-native-locale-detector/android/build.gradle
+index 1f9f4e0..a42cad5 100644
+--- a/node_modules/react-native-locale-detector/android/build.gradle
++++ b/node_modules/react-native-locale-detector/android/build.gradle
+@@ -30,5 +30,5 @@ repositories {
+ }
+ 
+ dependencies {
+-    compile 'com.facebook.react:react-native:0.12.+'
++    implementation 'com.facebook.react:react-native:+'
+ }
+\ No newline at end of file
