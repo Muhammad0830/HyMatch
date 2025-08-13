@@ -1,200 +1,127 @@
 import React from "react";
+import { View, ViewStyle } from "react-native";
 import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
 import Animated, {
-  useSharedValue,
+  useAnimatedGestureHandler,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
-  withTiming,
-  interpolate,
   runOnJS,
+  interpolate,
 } from "react-native-reanimated";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { useTranslation } from "react-i18next";
+import { SwipeIndicator } from "./SwipeIndicator";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
+interface SwipeableCardProps {
+  children: React.ReactNode;
+  onSwipeRight: () => void;
+  onSwipeLeft: () => void;
+  isTop: boolean;
+  zIndex: number;
+  style?: ViewStyle;
+}
 
-type SwiperProps = {
-  data: any[];
-  onSwipeLeft?: (job: any) => void;
-  onSwipeRight?: (job: any) => void;
-  renderCard: (job: any) => React.ReactNode;
-  handleReset: () => void;
-};
+const SWIPE_THRESHOLD = 100;
+const CARD_WIDTH = 300;
 
-export default function Swiper({
-  data,
-  renderCard,
-  onSwipeLeft = () => {},
-  onSwipeRight = () => {},
-  handleReset = () => {},
-}: SwiperProps) {
+export function SwipeableCard({
+  children,
+  onSwipeRight,
+  onSwipeLeft,
+  isTop,
+  zIndex,
+  style,
+}: SwipeableCardProps) {
   const translateX = useSharedValue(0);
-  const rotate = useSharedValue(0);
-  const { t } = useTranslation();
+  const translateY = useSharedValue(0);
+  const rotation = useSharedValue(0);
+  const scale = useSharedValue(1);
 
-  const currentItem = data[0];
-
-  const handleSwipe = (direction: "left" | "right") => {
-    try {
-      if (!currentItem) return;
-
-      if (direction === "left") {
-        onSwipeLeft(currentItem);
-      } else {
-        onSwipeRight(currentItem);
-      }
-
-      translateX.value = 0;
-      rotate.value = 0;
-    } catch (error) {
-      console.error("Error in handleSwipe:", error);
-    }
-  };
-
-  const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
-      translateX.value = event.translationX;
-      rotate.value = interpolate(translateX.value, [-300, 300], [-20, 20]);
-    })
-    .onEnd(() => {
-      if (translateX.value < -100) {
-        translateX.value = withSpring(
-          -SCREEN_WIDTH - 100,
-          { duration: 500 },
-          () => runOnJS(handleSwipe)("left")
+  const gestureHandler =
+    useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
+      onActive: (event) => {
+        translateX.value = event.translationX;
+        translateY.value = event.translationY;
+        rotation.value = interpolate(
+          event.translationX,
+          [-CARD_WIDTH, 0, CARD_WIDTH],
+          [-15, 0, 15]
         );
-      } else if (translateX.value > 100) {
-        translateX.value = withSpring(
-          SCREEN_WIDTH + 100,
-          { duration: 500 },
-          () => runOnJS(handleSwipe)("right")
-        );
-      } else {
-        translateX.value = withSpring(0);
-        rotate.value = withSpring(0);
-      }
+      },
+      onEnd: (event) => {
+        const shouldSwipeRight = event.translationX > SWIPE_THRESHOLD;
+        const shouldSwipeLeft = event.translationX < -SWIPE_THRESHOLD;
+
+        if (shouldSwipeRight) {
+          translateX.value = withSpring(CARD_WIDTH * 2);
+          translateY.value = withSpring(event.translationY);
+          runOnJS(onSwipeRight)();
+        } else if (shouldSwipeLeft) {
+          translateX.value = withSpring(-CARD_WIDTH * 2);
+          translateY.value = withSpring(event.translationY);
+          runOnJS(onSwipeLeft)();
+        } else {
+          translateX.value = withSpring(0);
+          translateY.value = withSpring(0);
+          rotation.value = withSpring(0);
+        }
+
+        scale.value = withSpring(1);
+      },
     });
 
-  const animatedCardStyle = useAnimatedStyle(() => ({
+  const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
-      { rotate: `${rotate.value}deg` },
+      { translateY: translateY.value },
+      { rotate: `${rotation.value}deg` },
+      { scale: scale.value },
     ],
   }));
 
-  const likeOpacity = useAnimatedStyle(() => ({
-    opacity: interpolate(translateX.value, [0, SCREEN_WIDTH / 2], [0, 1]),
+  const rightIndicatorStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      translateX.value,
+      [0, SWIPE_THRESHOLD],
+      [0, 1],
+      "clamp"
+    ),
   }));
 
-  const nopeOpacity = useAnimatedStyle(() => ({
-    opacity: interpolate(translateX.value, [-SCREEN_WIDTH / 2, 0], [1, 0]),
+  const leftIndicatorStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      translateX.value,
+      [-SWIPE_THRESHOLD, 0],
+      [1, 0],
+      "clamp"
+    ),
   }));
-
-  const rotating = useSharedValue(0);
-
-  const spinStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          rotate: `${rotating.value}deg`,
-        },
-      ],
-    };
-  });
-
-  const handleRefresh = () => {
-    const duration = 1500;
-
-    rotating.value = withTiming(-1080, { duration }, () => {
-      runOnJS(handleReset)();
-    });
-
-    setTimeout(() => {
-      rotating.value = 0;
-    }, duration + 1000);
-  };
-
-  if (data.length <= 0) {
-    return (
-      <View className="items-center h-[83vh] px-4 justify-center">
-        <Text className="text-xl text-center">{t("noJobLeft")}</Text>
-        <Text className="mt-4 mb-2 text-xl text-center">{t("change Filter")}</Text>
-        <Text className="mt-6 text-lg text-center">{t("resetFilter?")}</Text>
-        <TouchableOpacity
-          onPress={() => handleRefresh()}
-          className="mt-2 bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
-        >
-          <Animated.View style={spinStyle}>
-            <FontAwesomeIcon icon={faArrowLeftRotate} size={16} color="white" />
-          </Animated.View>
-          <Text className="text-white font-bold">{t("Reset")}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
 
   return (
-    <View style={StyleSheet.absoluteFill}>
-      <GestureDetector gesture={panGesture}>
-        <Animated.View style={[styles.card, animatedCardStyle]}>
-          <Animated.View
-            pointerEvents={"none"}
-            style={[likeOpacity]}
-            className={
-              "left-10 bg-transparent border-[5px] border-green-500 w-36 aspect-square absolute top-16 p-2.5 rounded-full z-10 justify-center items-center"
-            }
-          >
-            <Text className="text-green-500 font-bold text-2xl">CHOOSE</Text>
-          </Animated.View>
-          <Animated.View
-            pointerEvents={"none"}
-            style={[nopeOpacity]}
-            className={
-              "right-10 bg-transparent border-[5px] border-red-500 w-36 aspect-square absolute top-16 p-2.5 rounded-full z-10 justify-center items-center"
-            }
-          >
-            <Text className="text-red-500 font-bold text-2xl">REFUSE</Text>
-          </Animated.View>
+    <PanGestureHandler onGestureEvent={gestureHandler} enabled={isTop}>
+      <Animated.View
+        style={[animatedStyle, style, { zIndex }]}
+        className="flex-1"
+        pointerEvents="box-none"
+      >
+        <View className="flex-1 justify-center items-center">{children}</View>
 
-          {renderCard(currentItem)}
-        </Animated.View>
-      </GestureDetector>
-    </View>
+        {/* SWIPE RIGHT → CHOOSE */}
+        <SwipeIndicator
+          type="right"
+          style={rightIndicatorStyle}
+          className="absolute top-[50px] left-5"
+        />
+
+        {/* SWIPE LEFT → REFUSAL */}
+        <SwipeIndicator
+          type="left"
+          style={leftIndicatorStyle}
+          className="absolute top-[50px] right-5"
+        />
+      </Animated.View>
+    </PanGestureHandler>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    position: "absolute",
-    width: SCREEN_WIDTH,
-    alignSelf: "center",
-  },
-  badge: {
-    position: "absolute",
-    top: 20,
-    padding: 10,
-    borderRadius: 5,
-    zIndex: 10,
-  },
-  likeBadge: {
-    left: 20,
-    backgroundColor: "green",
-  },
-  nopeBadge: {
-    right: 20,
-    backgroundColor: "red",
-  },
-  badgeText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
