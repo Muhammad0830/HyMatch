@@ -16,11 +16,10 @@ import Data from "@/data.json";
 import { faArrowLeftRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useTranslation } from "react-i18next";
-import Swiper from "@/components/Swiper";
-import { defaultFilterState } from "@/components/SortingAndFiltering";
+import { SwipeableCard } from "@/components/Swiper";
 
 export default function Index() {
-  const { data, setData, unSwipedJobs, setFilterState } = useData();
+  const { data, setData, unSwipedJobs } = useData();
   const { t } = useTranslation();
   const [isExitModelOpen, setIsExitModelOpen] = useState(false);
 
@@ -62,53 +61,63 @@ export default function Index() {
     outputRange: ["0deg", "360deg"],
   });
 
-  const addToChosen = (job: any) => {
+  const addToChosen = () => {
+    const job = unSwipedJobs[0];
     const jobsData = data.jobsData.filter((Job: any) => Job.id !== job.id);
     const ChosenData = [...data.ChosenData, job];
     setData((prev: any) => ({ ...prev, ChosenData, jobsData }));
   };
 
-  const addToRefused = (job: any) => {
+  const addToRefused = () => {
+    const job = unSwipedJobs[0];
     const jobsData = data.jobsData.filter((Job: any) => Job.id !== job.id);
     const RefusedData = [...data.RefusedData, job];
     setData((prev: any) => ({ ...prev, RefusedData, jobsData }));
   };
 
-  const handleReset = () => {
-    setFilterState(defaultFilterState);
-  };
+  const visibleJobs = unSwipedJobs.slice(0, 3);
+
+  if (visibleJobs.length === 0)
+    return (
+      <View className="items-center h-[83vh] px-1 justify-center">
+        <Text className="text-xl">{t("noJobLeft")}</Text>
+        <Text className="mt-4 mb-2 text-lg">{t("waitForJobs")}</Text>
+        <TouchableOpacity
+          className="bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
+          onPress={() => handleRefresh()}
+        >
+          <Animated.View style={{ transform: [{ rotate: spin }] }}>
+            <FontAwesomeIcon icon={faArrowLeftRotate} size={16} color="white" />
+          </Animated.View>
+          <Text className="text-white font-bold">{t("Refresh")}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+
 
   return (
     <View className="flex-1 bg-[#b1b1b1] z-0">
-      {data.jobsData.length > 0 ? (
-        <View className="w-full h-full z-10 bg-transparent">
-          <Swiper
-            data={unSwipedJobs}
-            onSwipeLeft={(job: any) => addToRefused(job)}
-            onSwipeRight={(job: any) => addToChosen(job)}
-            renderCard={(job: any) => <JobCard Job={job} />}
-            handleReset={() => handleReset()}
-          />
-        </View>
-      ) : (
-        <View className="items-center h-[83vh] px-1 justify-center">
-          <Text className="text-xl">{t("noJobLeft")}</Text>
-          <Text className="mt-4 mb-2 text-lg">{t("waitForJobs")}</Text>
-          <TouchableOpacity
-            className="bg-blue-500 px-3 py-2 rounded-md flex-row gap-2 items-center"
-            onPress={() => handleRefresh()}
+      <View className="w-full h-full z-10 relative bottom-3 flex justify-center items-center">
+        {visibleJobs.map((job, index) => (
+          <SwipeableCard
+            key={job.id}
+            onSwipeRight={addToChosen}
+            onSwipeLeft={addToRefused}
+            isTop={index === 0}
+            zIndex={visibleJobs.length - index}
+            style={{
+                position: "absolute",
+                width: "100%",
+                height: 550,
+                transform: [
+                  { scale: 1 - index * 0.03 },
+                  { translateY: index * 8 },
+                ],}}
           >
-            <Animated.View style={{ transform: [{ rotate: spin }] }}>
-              <FontAwesomeIcon
-                icon={faArrowLeftRotate}
-                size={16}
-                color="white"
-              />
-            </Animated.View>
-            <Text className="text-white font-bold">{t("Refresh")}</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+            <JobCard Job={job} />
+          </SwipeableCard>
+        ))}
+      </View>
 
       <View className="absolute top-0 left-0">
         <Modal

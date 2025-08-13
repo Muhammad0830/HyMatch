@@ -91,11 +91,7 @@ const SortAndFiltering = ({ handleSortPress }: SortModalProps) => {
   const filteredSortedJobs = useMemo(() => {
     return getFilteredAndSortedJobs(data.jobsData, filterState, sortState);
   }, [data.jobsData, filterState, sortState]);
-  console.log(
-    "filteredSortedJobs",
-    filteredSortedJobs.map((job: any) => job.name)
-  );
-
+ 
   const filteredChosenJobs = useMemo(() => {
     return getFilteredAndSortedJobs(data.ChosenData, filterState, sortState);
   }, [data.ChosenData, filterState, sortState]);
