@@ -12,11 +12,12 @@ import {
 type Props = {
   label: string;
   value: string | number | null;
-  options: (string | number)[];
+  options: (string | number)[] | any;
   onChange: (val: string | number) => void;
   isLabel?: boolean;
   className?: string;
   buttonClassName?: string;
+  disabled?: boolean;
 };
 
 export const SelectInput = ({
@@ -27,9 +28,11 @@ export const SelectInput = ({
   isLabel,
   className,
   buttonClassName,
+  disabled,
 }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { t } = useTranslation();
+
   return (
     <View className={className}>
       {isLabel && <Text className="mb-1 font-semibold">{label}</Text>}
@@ -38,9 +41,7 @@ export const SelectInput = ({
         onPress={() => setModalVisible(true)}
       >
         {value ? (
-          <Text className="text-base text-black">
-            {value.toString()}
-          </Text>
+          <Text className="text-base text-black">{value.toString()}</Text>
         ) : (
           <Text className="text-base text-gray-600">{t("Select...")}</Text>
         )}
@@ -58,21 +59,35 @@ export const SelectInput = ({
           activeOpacity={1}
         >
           <View className="bg-white rounded-lg max-h-[50%]">
-            <FlatList
-              data={options}
-              keyExtractor={(item) => item.toString()}
-              renderItem={({ item }) => (
-                <Pressable
-                  className="p-4 border-b border-gray-200"
-                  onPress={() => {
-                    onChange(item);
-                    setModalVisible(false);
-                  }}
-                >
-                  <Text className="text-base">{item}</Text>
-                </Pressable>
-              )}
-            />
+            {disabled ? (
+              <View className="p-4 rounded-md">
+                <Text>{t("please select a previous value first")}</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={options}
+                keyExtractor={(item, index) =>
+                  typeof item === "string" || typeof item === "number"
+                    ? item.toString()
+                    : (item.value?.toString() ?? index.toString())
+                }
+                renderItem={({ item }) => (
+                  <Pressable
+                    className="p-4 border-b border-gray-200"
+                    onPress={() => {
+                      onChange(typeof item === "object" ? item.value : item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text className="text-base">
+                      {t(
+                        `${typeof item === "object" ? item.label : item.toString()}`
+                      )}
+                    </Text>
+                  </Pressable>
+                )}
+              />
+            )}
           </View>
         </TouchableOpacity>
       </Modal>

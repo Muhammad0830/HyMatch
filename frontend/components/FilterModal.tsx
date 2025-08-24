@@ -56,14 +56,24 @@ const FilterModal = ({
   // animation
   const [focusedInput, setFocusedInput] = useState<"from" | "to" | null>(null);
   const animations = useRef(
-    units.reduce((acc, unit) => {
-      acc[unit] = {
-        bg: new Animated.Value(unit === selectedUnit ? 0 : -120),
-        iconMargin: new Animated.Value(unit === selectedUnit ? 10 : 30),
-        containerX: new Animated.Value(unit === selectedUnit ? 0 : -40),
-      };
-      return acc;
-    }, {} as Record<string, { bg: Animated.Value; iconMargin: Animated.Value; containerX: Animated.Value }>)
+    units.reduce(
+      (acc, unit) => {
+        acc[unit] = {
+          bg: new Animated.Value(unit === selectedUnit ? 0 : -120),
+          iconMargin: new Animated.Value(unit === selectedUnit ? 10 : 30),
+          containerX: new Animated.Value(unit === selectedUnit ? 0 : -40),
+        };
+        return acc;
+      },
+      {} as Record<
+        string,
+        {
+          bg: Animated.Value;
+          iconMargin: Animated.Value;
+          containerX: Animated.Value;
+        }
+      >
+    )
   ).current;
 
   useEffect(() => {
@@ -251,6 +261,7 @@ const FilterModal = ({
               <Text className="capitalize text-lg font-bold">
                 {t(`${selectedUnit} range`)}
               </Text>
+              <Text className="">{t("Average")}</Text>
             </View>
             <Text
               className="text-sm"
@@ -363,7 +374,7 @@ const FilterModal = ({
                   updatedFilterKey = {
                     hourlyRange: null,
                   };
-                } else if (filterKey === "jobtype") {
+                } else if (filterKey === "desiredjobtype") {
                   updatedFilterKey = {
                     jobType: [],
                   };
