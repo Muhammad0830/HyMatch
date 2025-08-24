@@ -51,7 +51,12 @@ export default function JobCard({ Job }: any) {
                 hasInfo
               />
             </View>
-            <Text className="text-2xl font-bold">{Job.name}</Text>
+            <Text
+              numberOfLines={2}
+              className="text-2xl font-bold flex-1 overflow-hidden"
+            >
+              {Job.name}
+            </Text>
           </View>
         </View>
         <View className="gap-5 mt-2 flex-1 justify-evenly border border-[#c29c70] rounded-2xl p-3">
