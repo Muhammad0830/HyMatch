@@ -67,9 +67,18 @@ export default function pdfContent(data: any) {
         <div class="info-row"><span class="label">Country:</span><span class="value">${
           data.country
         }</span></div>
-        <div class="info-row"><span class="label">Address:</span><span class="value">${
-          data.address
-        }</span></div>
+        <div class="info-row"><span class="label">Postal Code:</span><span class="value">${data.postalCode}</span></div>
+        <div class="info-row"><span class="label">Address:</span><span style="text-transform: capitalize;" class="value">${
+          data.prefecture
+        },</span>
+        <span style="text-transform: capitalize;" class="value">${
+          data.city
+        },</span>
+        <span style="text-transform: capitalize;" class="value">${
+          data.town
+        },</span>
+        
+        <span class="value">${data["Chome, block number, and number"]}</span></div>
         <div class="info-row"><span class="label">Japanese Level:</span><span class="value">${data.JapaneseLevel.join(
           ", "
         )}</span></div>

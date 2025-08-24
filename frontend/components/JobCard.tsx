@@ -1,5 +1,5 @@
-import { Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import { Text, View } from "react-native";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faFileContract,
@@ -11,7 +11,6 @@ import {
   faCalendarAlt,
   faClock,
   faStar,
-  faInfo,
   faBuilding,
   faBellConcierge,
   faBroom,
@@ -21,12 +20,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import FontAwesomeIconWithInfo from "@/components/FontAwesomeIconWithInfo";
-import BigInfoModal from "./BigInfoModal";
 import { createStarIconConfig } from "@/constants/infoIconsData";
 
 export default function JobCard({ Job }: any) {
   const { t } = useTranslation();
-  const [bigInfoModalOpen, setBigInfoModalOpen] = useState(false);
 
   const starIconConfig = createStarIconConfig(t);
 
@@ -56,12 +53,6 @@ export default function JobCard({ Job }: any) {
             </View>
             <Text className="text-2xl font-bold">{Job.name}</Text>
           </View>
-          <TouchableOpacity
-            onPress={() => setBigInfoModalOpen(true)}
-            className="justify-center items-center p-2 rounded-full bg-[#c29c70]"
-          >
-            <FontAwesomeIcon icon={faInfo} size={18} color="white" />
-          </TouchableOpacity>
         </View>
         <View className="gap-5 mt-2 flex-1 justify-evenly border border-[#c29c70] rounded-2xl p-3">
           <View className="flex-row items-center justify-between gap-3">
@@ -235,13 +226,6 @@ export default function JobCard({ Job }: any) {
         </View>
       </View>
       <View className="transparent w-full" style={{ height: 70 }}></View>
-
-      <View>
-        <BigInfoModal
-          isBigInfoModalOpen={bigInfoModalOpen}
-          setBigInfoModalOpen={setBigInfoModalOpen}
-        />
-      </View>
     </View>
   );
 }

@@ -30,10 +30,11 @@ export type FieldDefinition =
   | {
       name: string;
       label: string;
-      type: "text" | "select" | "radio" | "file" | "checkbox" | "col-checkbox";
+      type: "text" | "select" | "radio" | "file" | "checkbox" | "col-checkbox" | "address";
       options?: string[] | number[];
       keyboardType?: "default" | "numeric" | "email-address" | "phone-pad";
       icon?: any;
+      required?: boolean;
     }
   | {
       name: string;
@@ -41,6 +42,7 @@ export type FieldDefinition =
       type: "radio";
       options: { label: string; icon: any }[];
       icon?: any;
+      required?: boolean;
     };
 
 export type FormValues = {

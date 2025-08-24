@@ -33,6 +33,59 @@ import { generatePdf } from "@/lib/downloadPDFprofile";
 const MAX_WIDTH = Dimensions.get("window").width * 0.9;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.8;
 
+const prefectures = [
+  { label: "東京都", value: "tokyo" },
+  { label: "大阪府", value: "osaka" },
+  { label: "福島県", value: "fukushima" },
+];
+
+const municipalities: Record<string, { label: string; value: string }[]> = {
+  tokyo: [
+    { label: "品川区", value: "shinagawa" },
+    { label: "新宿区", value: "shinjuku" },
+  ],
+  osaka: [
+    { label: "大阪市北区", value: "osaka-kita" },
+    { label: "大阪市中央区", value: "osaka-chuo" },
+  ],
+  fukushima: [
+    { label: "郡山市", value: "koriyama" },
+    { label: "福島市", value: "fukushima-shi" },
+  ],
+};
+
+const towns: Record<string, { label: string; value: string }[]> = {
+  // Tokyo
+  shinagawa: [
+    { label: "二葉", value: "futaba" },
+    { label: "大崎", value: "osaki" },
+  ],
+  shinjuku: [
+    { label: "歌舞伎町", value: "kabukicho" },
+    { label: "西新宿", value: "nishi-shinjuku" },
+  ],
+
+  // Osaka
+  "osaka-kita": [
+    { label: "梅田", value: "umeda" },
+    { label: "中之島", value: "nakanoshima" },
+  ],
+  "osaka-chuo": [
+    { label: "心斎橋", value: "shinsaibashi" },
+    { label: "道頓堀", value: "dotonbori" },
+  ],
+
+  // Fukushima
+  koriyama: [
+    { label: "開成", value: "kaisei" },
+    { label: "安積町", value: "asaka-machi" },
+  ],
+  "fukushima-shi": [
+    { label: "笹谷", value: "sasaya" },
+    { label: "飯坂町", value: "iizaka-machi" },
+  ],
+};
+
 export default function ProfileForm() {
   const {
     control,
@@ -41,6 +94,8 @@ export default function ProfileForm() {
     formState: { errors, isValid },
     getValues,
     trigger,
+    watch,
+    setValue,
   } = useForm<FormValues>({
     mode: "onChange",
     defaultValues: {
@@ -57,6 +112,48 @@ export default function ProfileForm() {
   const [submitted, setSubmitted] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [showImportantJobsModal, setShowImportantJobsModal] = useState(false);
+
+  const postalCode = watch("postalCode");
+  const prefecture = watch("prefecture");
+  const city = watch("city");
+
+  // Postal → Address autofill (uses ZipCloud; adjust to your fetch)
+  const fetchAddress = async () => {
+    if (!postalCode || postalCode.length !== 7) return;
+
+    try {
+      const res = await fetch(
+        `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`
+      );
+      const data = await res.json();
+      if (!data?.results?.length) return;
+
+      const r = data.results[0]; // { address1: 都道府県, address2: 市区町村, address3: 町域 }
+
+      // match prefecture by kanji label
+      const prefVal =
+        prefectures.find((p) => r.address1.includes(p.label))?.value ?? "";
+
+      // find city from municipalities of that prefecture
+      const muniList = municipalities[prefVal] ?? [];
+      const cityVal =
+        muniList.find((m) => r.address2.includes(m.label))?.value ?? "";
+
+      // find town from towns of that city
+      const townList = towns[cityVal] ?? [];
+      const townVal =
+        townList.find((t) => r.address3.includes(t.label))?.value ?? "";
+
+      setValue("prefecture", prefVal, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+      setValue("city", cityVal, { shouldDirty: true, shouldValidate: true });
+      setValue("town", townVal, { shouldDirty: true, shouldValidate: true });
+    } catch (e) {
+      // handle error UI if you want
+    }
+  };
 
   const onSubmit = () => {
     const values = getValues();
@@ -263,7 +360,7 @@ export default function ProfileForm() {
                 <Controller
                   control={control}
                   name={field.name}
-                  rules={{ required: true }}
+                  rules={{ required: field.required }}
                   render={({ field: { onChange, value } }) => {
                     if (field.type === "text") {
                       return (
@@ -318,6 +415,114 @@ export default function ProfileForm() {
                           options={field.options}
                           onChange={onChange}
                         />
+                      );
+                    }
+
+                    if (field.type === "address") {
+                      return (
+                        <View className="flex-1 padding-[20px] justify-center">
+                          {field.name === "postalCode" ? (
+                            <View className="flex-row items-center gap-2 mb-2">
+                              <TextInput
+                                className={`border flex-1 rounded-md p-3 bg-white text-black ${
+                                  errors.postalCode
+                                    ? "border-red-600"
+                                    : "border-blue-600/30"
+                                }`}
+                                keyboardType="numeric"
+                                value={value}
+                                onChangeText={(txt) =>
+                                  onChange(txt.replace(/\D/g, ""))
+                                }
+                                placeholder={`${t("例: 1420043")}`}
+                                placeholderTextColor="#4B5563"
+                              />
+                              <TouchableOpacity
+                                disabled={postalCode?.length !== 7}
+                                className={`bg-blue-700 h-full px-3 justify-center items-center rounded-md ${
+                                  (value || "").length !== 7 ? "opacity-50" : ""
+                                }`}
+                                onPress={fetchAddress}
+                              >
+                                <Text className="text-white">
+                                  {t("autoFill")}
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          ) : field.name === "prefecture" ? (
+                            <SelectInput
+                              buttonClassName={`border rounded-md p-3 bg-white ${
+                                errors.prefecture
+                                  ? "border-red-600"
+                                  : "border-blue-600/30"
+                              }`}
+                              label="都道府県"
+                              value={value}
+                              options={prefectures}
+                              onChange={(val) => {
+                                setValue("prefecture", String(val), {
+                                  shouldDirty: true,
+                                  shouldValidate: true,
+                                });
+                                setValue("city", "", {
+                                  shouldDirty: true,
+                                  shouldValidate: true,
+                                });
+                                setValue("town", "", {
+                                  shouldDirty: true,
+                                  shouldValidate: true,
+                                });
+                              }}
+                            />
+                          ) : field.name === "city" ? (
+                            <SelectInput
+                              buttonClassName={`border rounded-md p-3 bg-white ${
+                                errors.city
+                                  ? "border-red-600"
+                                  : "border-blue-600/30"
+                              }`}
+                              label="市区町村"
+                              value={value}
+                              options={municipalities[prefecture] || []}
+                              onChange={(val) => {
+                                setValue("city", String(val), {
+                                  shouldDirty: true,
+                                  shouldValidate: true,
+                                });
+                                setValue("town", "", {
+                                  shouldDirty: true,
+                                  shouldValidate: true,
+                                });
+                              }}
+                              disabled={!prefecture}
+                            />
+                          ) : field.name === "town" ? (
+                            <SelectInput
+                              buttonClassName={`border rounded-md p-3 bg-white ${
+                                errors.town
+                                  ? "border-red-600"
+                                  : "border-blue-600/30"
+                              }`}
+                              label="町域"
+                              value={value}
+                              options={towns[city] || []}
+                              onChange={(val) => onChange(String(val))}
+                              disabled={!city}
+                            />
+                          ) : (
+                            <TextInput
+                              className={`border flex-1 rounded-md p-3 bg-white text-black ${
+                                errors["Chome, block number, and number"]
+                                  ? "border-red-600"
+                                  : "border-blue-600/30"
+                              }`}
+                              value={value}
+                              onChangeText={onChange}
+                              placeholder="丁目・番地・号（手動入力）"
+                              placeholderTextColor="#4B5563"
+                            />
+                          )}
+                        </View>
                       );
                     }
 
@@ -413,11 +618,11 @@ export default function ProfileForm() {
                       return (
                         <View>
                           <TouchableOpacity
-                            className={`px-4 py-3 flex-row items-center justify-between gap-2 p-1 border rounded-md ${
+                            className={`px-4 py-3 flex-row items-center bg-white justify-between gap-2 p-1 border rounded-md ${
                               errors["starred"]
                                 ? "border-red-600"
                                 : "border-blue-200"
-                            }`}
+                            }`} 
                             onPress={() => setShowImportantJobsModal(true)}
                           >
                             <Text>

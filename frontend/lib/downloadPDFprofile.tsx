@@ -17,6 +17,7 @@ async function requestStoragePermission() {
 }
 
 export const generatePdf = async (data: any) => {
+  console.log("data", data);
   const hasPermission = await requestStoragePermission();
   if (!hasPermission) {
     Alert.alert(
