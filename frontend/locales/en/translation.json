@@ -166,5 +166,6 @@
   "town": "town",
   "Chome, block number, and number": "Chome, block number, and number",
   "例: 1420043": "e.g. 1420043",
-  "Average": "Average"
+  "Average": "Average",
+  "Failed to fetch address. Please enter manually.": "Failed to fetch address. Please enter manually."
 }

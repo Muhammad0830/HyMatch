@@ -166,5 +166,6 @@
   "town": "Tuman",
   "Chome, block number, and number": "Chome, block raqami va uy raqami",
   "例: 1420043": "namuna: 1420043",
-  "Average": "O'rtacha"
+  "Average": "O'rtacha",
+  "Failed to fetch address. Please enter manually.": "Manzilni olishda xatolik yuz berdi. Iltimos, qo'lda kiriting."
 }

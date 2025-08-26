@@ -6,7 +6,7 @@ import en from "./locales/en/translation.json";
 import ja from "./locales/ja/translation.json";
 import uz from "./locales/uz/translation.json";
 
-const fallbackLng = "en";
+const fallbackLng = "ja";
 const supportedLngs = ["en", "ja", "uz"];
 
 const getDeviceLanguage = () => {

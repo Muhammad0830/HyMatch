@@ -166,5 +166,6 @@
   "town": "町域",
   "Chome, block number, and number": "丁目・番地・号（手動入力）",
   "例: 1420043": "例：1420043",
-  "Average": "平均"
+  "Average": "平均",
+  "Failed to fetch address. Please enter manually.": "住所の自動取得に失敗しました。手動で入力してください。"
 }

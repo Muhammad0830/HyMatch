@@ -11,6 +11,7 @@ import {
   Dimensions,
   Modal,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { FieldDefinition, FormValues } from "@/types/types";
 import * as ImagePicker from "expo-image-picker";
@@ -112,6 +113,7 @@ export default function ProfileForm() {
   const [submitted, setSubmitted] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const [showImportantJobsModal, setShowImportantJobsModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const postalCode = watch("postalCode");
   const prefecture = watch("prefecture");
@@ -122,24 +124,22 @@ export default function ProfileForm() {
     if (!postalCode || postalCode.length !== 7) return;
 
     try {
+      setLoading(true); // start loading
       const res = await fetch(
         `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${postalCode}`
       );
       const data = await res.json();
       if (!data?.results?.length) return;
 
-      const r = data.results[0]; // { address1: 都道府県, address2: 市区町村, address3: 町域 }
+      const r = data.results[0];
 
-      // match prefecture by kanji label
       const prefVal =
         prefectures.find((p) => r.address1.includes(p.label))?.value ?? "";
 
-      // find city from municipalities of that prefecture
       const muniList = municipalities[prefVal] ?? [];
       const cityVal =
         muniList.find((m) => r.address2.includes(m.label))?.value ?? "";
 
-      // find town from towns of that city
       const townList = towns[cityVal] ?? [];
       const townVal =
         townList.find((t) => r.address3.includes(t.label))?.value ?? "";
@@ -151,7 +151,10 @@ export default function ProfileForm() {
       setValue("city", cityVal, { shouldDirty: true, shouldValidate: true });
       setValue("town", townVal, { shouldDirty: true, shouldValidate: true });
     } catch (e) {
-      // handle error UI if you want
+      alert(t("Failed to fetch address. Please enter manually."));
+      console.error("Address fetch error", e);
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
@@ -438,15 +441,19 @@ export default function ProfileForm() {
                                 placeholderTextColor="#4B5563"
                               />
                               <TouchableOpacity
-                                disabled={postalCode?.length !== 7}
-                                className={`bg-blue-700 h-full px-3 justify-center items-center rounded-md ${
-                                  (value || "").length !== 7 ? "opacity-50" : ""
+                                disabled={postalCode?.length !== 7 || loading}
+                                className={`bg-blue-700 h-full justify-center items-center px-3 rounded-md ${
+                                  postalCode?.length !== 7 ? "opacity-50" : ""
                                 }`}
                                 onPress={fetchAddress}
                               >
-                                <Text className="text-white">
-                                  {t("autoFill")}
-                                </Text>
+                                {loading ? (
+                                  <ActivityIndicator color="#fff" />
+                                ) : (
+                                  <Text className="text-white text-center">
+                                    {t("autoFill")}
+                                  </Text>
+                                )}
                               </TouchableOpacity>
                             </View>
                           ) : field.name === "prefecture" ? (
@@ -622,7 +629,7 @@ export default function ProfileForm() {
                               errors["starred"]
                                 ? "border-red-600"
                                 : "border-blue-200"
-                            }`} 
+                            }`}
                             onPress={() => setShowImportantJobsModal(true)}
                           >
                             <Text>

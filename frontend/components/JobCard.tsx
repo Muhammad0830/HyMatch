@@ -55,7 +55,7 @@ export default function JobCard({ Job }: any) {
               numberOfLines={2}
               className="text-2xl font-bold flex-1 overflow-hidden"
             >
-              {Job.name}
+              {t(`${Job.name}`)}
             </Text>
           </View>
         </View>
