@@ -16,7 +16,7 @@ export function SwipeIndicator({ type, style }: SwipeIndicatorProps) {
     <Animated.View
       style={style}
       className={cn(
-        "absolute top-[10%] z-[100] -translate-y-[60px] opacity-0",
+        "absolute top-[10%] z-[100] pointer-events-none -translate-y-[60px] opacity-0",
         isRight ? "left-5" : "right-5"
       )}
     >

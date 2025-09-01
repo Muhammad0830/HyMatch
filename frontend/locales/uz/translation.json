@@ -167,5 +167,10 @@
   "Chome, block number, and number": "Chome, block raqami va uy raqami",
   "例: 1420043": "namuna: 1420043",
   "Average": "O'rtacha",
-  "Failed to fetch address. Please enter manually.": "Manzilni olishda xatolik yuz berdi. Iltimos, qo'lda kiriting."
+  "Failed to fetch address. Please enter manually.": "Manzilni olishda xatolik yuz berdi. Iltimos, qo'lda kiriting.",
+  "Means there is station nearby": "Stansiya ish joyiga yaqin",
+  "Means beginner welcome": "Boshlovchilar uchun ham",
+  "Means salary increases": "Ish haqi o'sish imkoniyati",
+  "Means time flexibility": "O'zgaruvchan ish vaqti",
+  "Means 5 wordays per week": "Haftasiga 5 kun ish"
 }

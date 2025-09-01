@@ -48,7 +48,7 @@ export default function ChosenCard({ job, index }: any) {
   });
 
   const truthyCount = Object.values(job.workDay).filter(Boolean).length;
-  const minLevel = job.japaneseLevel[0][0];
+  const minLevel = job.japaneseLevel;
 
   return (
     <TouchableOpacity
