@@ -167,5 +167,10 @@
   "Chome, block number, and number": "丁目・番地・号（手動入力）",
   "例: 1420043": "例：1420043",
   "Average": "平均",
-  "Failed to fetch address. Please enter manually.": "住所の自動取得に失敗しました。手動で入力してください。"
+  "Failed to fetch address. Please enter manually.": "住所の自動取得に失敗しました。手動で入力してください。",
+  "Means there is station nearby": "隣接する駅があることを意味します",
+  "Means beginner welcome": "初心者の歓迎を意味します",
+  "Means salary increases": "待遇が上昇することを意味します",
+  "Means time flexibility": "時間の融通を意味します",
+  "Means 5 wordays per week": "週あたり5日勤務を意味します"
 }

@@ -167,5 +167,10 @@
   "Chome, block number, and number": "Chome, block number, and number",
   "例: 1420043": "e.g. 1420043",
   "Average": "Average",
-  "Failed to fetch address. Please enter manually.": "Failed to fetch address. Please enter manually."
+  "Failed to fetch address. Please enter manually.": "Failed to fetch address. Please enter manually.",
+  "Means there is station nearby": "Means there is station nearby",
+  "Means beginner welcome": "Means beginner welcome",
+  "Means salary increases": "Means salary increases",
+  "Means time flexibility": "Means time flexibility",
+  "Means 5 wordays per week": "Means 5 wordays per week"
 }
