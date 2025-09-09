@@ -36,7 +36,7 @@
     "expo-system-ui": "~5.0.10",
     "i18next": "^25.3.2",
     "nativewind": "^4.1.23",
-    "react": "19.0.0",  
+    "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.60.0",
     "react-i18next": "^15.6.0",
@@ -48,7 +48,8 @@
     "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "expo-media-library": "~17.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
